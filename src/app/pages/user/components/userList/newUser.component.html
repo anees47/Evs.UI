@@ -1,0 +1,70 @@
+<div class="new-user-header" style="display: flex; align-items: center; justify-content: space-between;">
+  <h2>User Management</h2>
+  <button class="btn btn-primary" (click)="openAddUserDialog()">
+    <i class="bi bi-plus"></i> Add New
+  </button>
+</div>
+
+<div class="table-container">
+  @if (!loader) {
+    <e2v-table
+      class="d-content"
+      (actionClicked)="onActionClick($event)"
+      (itemSelected)="onItemSelected($event)"
+      (onExport)="onExport($event)"
+      (sortClicked)="onSort($event)"
+      (cellActionClicked)="onCellActionClick($event)"
+      [configs]="{
+          dataKey: 'id',
+          enableTableViewSize: true,
+          sortMode: TableSortModeEnum.SINGLE,
+          enableColumnFilter: showCheckboxes,
+          enableExport: true,
+          enableColumnToggle: true,
+          enableColumnReorder: false,
+          defaultFilterState: TableColumnFilterStateEnum.CLOSE,
+          enableColumnResize: false,
+          loaderRows: 15,
+          enableGlobalSearch: true,
+          fixedHeaders: true,
+          gridId: 'userList',
+          gridName: 'UserListGrid',
+          data: userData,
+          loadPageSize: 200,
+          columns: userColumns,
+          rowHover: true,
+          enableCustomFilter: true,
+          noDataText: 'No users found',
+          isBatchCallInProgress: false,
+          hasBatchCall: false,
+          isCustomSelectionOn: showCheckboxes,
+          exportOptions: [
+            { name: 'Export to Excel', icon: 'bi bi-file-earmark-excel', key: 'excel', isIcon: true },
+            { name: 'Export to CSV', icon: 'bi bi-file-earmark-text', key: 'csv', isIcon: true },
+            { name: 'Export to PDF', icon: 'bi bi-file-earmark-pdf', key: 'pdf', isIcon: true }
+          ]
+        }">
+      </e2v-table>
+    } @else {
+       <app-table-skeleton></app-table-skeleton>
+    }
+  </div>
+
+  <!-- Edit Dialog -->
+  <e2v-add-update-user
+    [isOpen]="isEditDialogOpen()"
+    [rowData]="selectedRowForEdit"
+    [columns]="userColumns"
+    (save)="onEditSave($event)"
+    (cancel)="onEditCancel()"
+    (close)="closeEditDialog()">
+  </e2v-add-update-user>
+@if (addUserDialogOpen()) {
+  <e2v-add-update-user
+    [isOpen]="addUserDialogOpen()"
+    [rowData]="selectedRowForEdit"
+    [columns]="userColumns"
+    (close)="closeAddUserDialog()">
+  </e2v-add-update-user>
+}
+

@@ -1,0 +1,13 @@
+<nav class="menu-bar">
+  <ul class="menu-list">
+    <li><button class="menu-btn" (click)="goToUser()">User</button></li>
+    <li><button class="menu-btn" (click)="goToFaq()">FAQ</button></li>
+    <li class="dropdown">
+      <button class="menu-btn dropdown-toggle" type="button" (click)="showDropdown = !showDropdown">Grossery</button>
+      <ul class="dropdown-menu" [class.show]="showDropdown">
+        <li><button class="dropdown-item" (click)="goToGrossery('Option 1')">Option 1</button></li>
+        <li><button class="dropdown-item" (click)="goToGrossery('Option 2')">Option 2</button></li>
+      </ul>
+    </li>
+  </ul>
+</nav> 

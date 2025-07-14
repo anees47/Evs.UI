@@ -1,0 +1,52 @@
+
+/* Loading Skeleton Styles */
+.loading-skeleton {
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.skeleton-row {
+  display: flex;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f3f4;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-row:last-child {
+  border-bottom: none;
+}
+
+.skeleton-cell {
+  height: 25px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  border-radius: 4px;
+  margin-right: 16px;
+  animation: shimmer 2s infinite;
+}
+
+.skeleton-cell:nth-child(1) { width: 60px; }
+.skeleton-cell:nth-child(2) { width: 180px; }
+.skeleton-cell:nth-child(3) { width: 220px; }
+.skeleton-cell:nth-child(4) { width: 100px; }
+.skeleton-cell:nth-child(5) { width: 100px; }
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+  .skeleton-cell {
+    margin-right: 8px;
+  }
+
+  .skeleton-cell:nth-child(1) { width: 40px; }
+  .skeleton-cell:nth-child(2) { width: 120px; }
+  .skeleton-cell:nth-child(3) { width: 150px; }
+  .skeleton-cell:nth-child(4) { width: 80px; }
+  .skeleton-cell:nth-child(5) { width: 80px; }
+}
