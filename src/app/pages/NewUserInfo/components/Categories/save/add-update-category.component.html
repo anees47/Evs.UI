@@ -1,0 +1,54 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ isEditMode ? 'Edit Category' : 'Add New Category' }}</h2>
+      <button class="close-btn" (click)="onClose()">&times;</button>
+    </div>
+
+    <form [formGroup]="editForm" (ngSubmit)="onSave()" class="form-container">
+      <div class="form-field">
+        <label for="name">Category Name *</label>
+        <input 
+          type="text" 
+          id="name" 
+          formControlName="name" 
+          placeholder="Enter category name"
+          [class.invalid]="isFieldInvalid('name')"
+        />
+        <div class="error-message" *ngIf="isFieldInvalid('name')">
+          {{ getFieldError('name') }}
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label class="checkbox-label">
+          <input 
+            type="checkbox" 
+            formControlName="isActive"
+          />
+          <span class="checkmark"></span>
+          Active Status
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="onCancel()"
+          [disabled]="isLoading"
+        >
+          Cancel
+        </button>
+        <button 
+          type="submit" 
+          class="btn btn-primary" 
+          [disabled]="editForm.invalid || isLoading"
+        >
+          <span *ngIf="isLoading">Saving...</span>
+          <span *ngIf="!isLoading">{{ isEditMode ? 'Update' : 'Save' }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div> 

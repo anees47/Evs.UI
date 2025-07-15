@@ -54,17 +54,19 @@
   <e2v-add-update-user
     [isOpen]="isEditDialogOpen()"
     [rowData]="selectedRowForEdit"
-    [columns]="userColumns"
+    [isEditMode]="true"
     (save)="onEditSave($event)"
     (cancel)="onEditCancel()"
     (close)="closeEditDialog()">
   </e2v-add-update-user>
-@if (addUserDialogOpen()) {
+
+  <!-- Add Dialog -->
   <e2v-add-update-user
     [isOpen]="addUserDialogOpen()"
     [rowData]="selectedRowForEdit"
-    [columns]="userColumns"
+    [isEditMode]="false"
+    (save)="onAddSave($event)"
+    (cancel)="onAddCancel()"
     (close)="closeAddUserDialog()">
   </e2v-add-update-user>
-}
 

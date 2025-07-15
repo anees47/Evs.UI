@@ -1,0 +1,149 @@
+<div class="categories-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <h2 class="page-title">
+        <i class="bi bi-tags me-2"></i>
+        Categories
+      </h2>
+      <p class="page-subtitle">Manage and organize your content categories</p>
+    </div>
+    <button class="btn btn-primary" (click)="onAddCategory()">
+      <i class="bi bi-plus-circle me-1"></i>
+      Add Category
+    </button>
+  </div>
+
+  <!-- Categories List -->
+  <div class="categories-grid">
+    @for (category of categories; track category.id) {
+      <div class="category-card" [class.inactive]="!category.isActive">
+        <div class="card-header">
+          <h3 class="category-name">{{ category.name }}</h3>
+          <div class="status-badge" [class.active]="category.isActive">
+            {{ category.isActive ? 'Active' : 'Inactive' }}
+          </div>
+        </div>
+
+        <p class="category-description">{{ category.description || 'No description available' }}</p>
+
+        <div class="card-actions">
+          <button class="btn btn-sm btn-outline-primary" (click)="onEditCategory(category)">
+            <i class="bi bi-pencil me-1"></i>
+            Edit
+          </button>
+          <button class="btn btn-sm btn-outline-secondary" (click)="onToggleStatus(category)">
+            <i class="bi" [class.bi-toggle-on]="category.isActive" [class.bi-toggle-off]="!category.isActive"></i>
+            {{ category.isActive ? 'Deactivate' : 'Activate' }}
+          </button>
+          <button class="btn btn-sm btn-outline-danger" (click)="onDeleteCategory(category.id)">
+            <i class="bi bi-trash me-1"></i>
+            Delete
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Add/Edit Modal -->
+  @if (isAddingCategory) {
+    <div class="modal-backdrop" (click)="onCancelEdit()">
+      <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="header-content">
+              <h5 class="modal-title">
+                <i class="bi bi-tag me-2"></i>
+                {{ editingCategoryId ? 'Edit Category' : 'Add New Category' }}
+              </h5>
+            </div>
+            <button type="button" class="btn-close" (click)="onCancelEdit()" aria-label="Close">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <form [formGroup]="categoryForm" (ngSubmit)="onSaveCategory()">
+              <div class="form-field">
+                <label for="name" class="form-label">
+                  Category Name
+                  <span class="required-indicator">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  class="form-control"
+                  formControlName="name"
+                  placeholder="Enter category name"
+                  [class.is-invalid]="isFieldInvalid('name')"
+                >
+                @if (isFieldInvalid('name')) {
+                  <div class="invalid-feedback">
+                    {{ getFieldError('name') }}
+                  </div>
+                }
+              </div>
+
+              <div class="form-field">
+                <label for="description" class="form-label">Description</label>
+                <textarea
+                  id="description"
+                  class="form-control"
+                  formControlName="description"
+                  placeholder="Enter category description"
+                  rows="3"
+                  [class.is-invalid]="isFieldInvalid('description')"
+                ></textarea>
+                @if (isFieldInvalid('description')) {
+                  <div class="invalid-feedback">
+                    {{ getFieldError('description') }}
+                  </div>
+                }
+              </div>
+
+              <div class="form-field">
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    id="isActive"
+                    class="form-check-input"
+                    formControlName="isActive"
+                  >
+                  <label class="form-check-label" for="isActive">
+                    Active Category
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onCancelEdit()">
+              <i class="bi bi-x-circle me-1"></i>
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary" (click)="onSaveCategory()" [disabled]="categoryForm.invalid">
+              <i class="bi bi-check-circle me-1"></i>
+              {{ editingCategoryId ? 'Update' : 'Save' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (categories.length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon">
+        <i class="bi bi-tags"></i>
+      </div>
+      <h3>No Categories Found</h3>
+      <p>Start by adding your first category to organize your content.</p>
+      <button class="btn btn-primary" (click)="onAddCategory()">
+        <i class="bi bi-plus-circle me-1"></i>
+        Add Your First Category
+      </button>
+    </div>
+  }
+</div>

@@ -1,0 +1,249 @@
+@if (isOpen) {
+  <div class="modal-backdrop" (click)="onClose()">
+    <div class="modal-dialog modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="header-content">
+            <h5 class="modal-title">
+              <i class="bi bi-pencil-square me-2"></i>
+              {{ isEditMode ? 'Edit' : 'Add' }} New User Info
+            </h5>
+          </div>
+          <button type="button" class="btn-close" (click)="onClose()" aria-label="Close">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <form [formGroup]="editForm" (ngSubmit)="onSave()">
+            <div class="form-grid">
+              <!-- Category ID as hidden field -->
+              <input type="hidden" formControlName="categoryId">
+
+              <!-- Title Field -->
+              <div class="form-field">
+                <label for="title" class="form-label">
+                  Title
+                  <span class="required-indicator">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  formControlName="title"
+                  placeholder="Enter title"
+                  [class.is-invalid]="isFieldInvalid('title')"
+                >
+                @if (isFieldInvalid('title')) {
+                  <div class="invalid-feedback">
+                    {{ getFieldError('title') }}
+                  </div>
+                }
+              </div>
+
+              <!-- Category Name Field (autocomplete) -->
+              <div class="form-field">
+                <label for="categoryName" class="form-label">
+                  Category Name
+                  <span class="required-indicator">*</span>
+                </label>
+                <div class="autocomplete-container">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="categoryName"
+                    formControlName="categoryName"
+                    placeholder="Type to search categories..."
+                    [class.is-invalid]="isFieldInvalid('categoryName')"
+                    (focus)="onCategoryInputFocus()"
+                    (input)="onCategoryNameChange($any($event.target).value)"
+                    (blur)="onCategoryInputBlur()"
+                    autocomplete="off"
+                  >
+                  @if (selectedCategory) {
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-secondary clear-btn"
+                      (click)="clearCategorySelection()"
+                    >
+                      <i class="bi bi-x"></i>
+                    </button>
+                  }
+                  @if (showCategoryDropdown) {
+                    <div class="autocomplete-dropdown">
+                      @for (category of categorySuggestions; track category.id) {
+                        <div
+                          class="dropdown-item"
+                          (click)="selectCategory(category)"
+                        >
+                          <div class="category-name">{{ category.name }}</div>
+                          <div class="category-description">{{ category.description }}</div>
+                        </div>
+                      }
+                      @if (categorySuggestions.length === 0) {
+                        <div class="dropdown-item no-results">
+                          No categories found
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+                @if (isFieldInvalid('categoryName')) {
+                  <div class="invalid-feedback">
+                    {{ getFieldError('categoryName') }}
+                  </div>
+                }
+              </div>
+
+
+              <!-- Total Items as hidden field -->
+              <input type="hidden" formControlName="totalItems">
+
+              <!-- Description Field (full width, above image section) -->
+              <div class="form-field full-width">
+                <label for="description" class="form-label">
+                  Description
+                  <span class="required-indicator">*</span>
+                </label>
+                <textarea
+                  class="form-control"
+                  id="description"
+                  formControlName="description"
+                  placeholder="Enter description"
+                  rows="3"
+                  [class.is-invalid]="isFieldInvalid('description')"
+                ></textarea>
+                @if (isFieldInvalid('description')) {
+                  <div class="invalid-feedback">
+                    {{ getFieldError('description') }}
+                  </div>
+                }
+              </div>
+
+              <!-- File Upload and Is Active Row -->
+              <div class="file-upload-row">
+                <!-- File Upload Field (80%) -->
+                <div class="file-upload-col">
+                  <div class="form-field file-upload-section">
+                    <label class="form-label">
+                      PDF Documents
+                    </label>
+                    <div class="file-input-container">
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="fileUpload"
+                        multiple
+                        accept=".pdf,application/pdf"
+                        (change)="onFileSelected($event)"
+                        style="display: none;"
+                        #fileInput
+                      >
+                      <button
+                        type="button"
+                        class="btn btn-outline-primary btn-sm"
+                        (click)="fileInput.click()"
+                      >
+                        <i class="bi bi-file-earmark-pdf me-1"></i>
+                        Choose PDF Files
+                      </button>
+                      <small class="text-muted file-inline-help">
+                        Max 10MB per file. Supported: PDF files only
+                      </small>
+                    </div>
+                  </div>
+                </div>
+                <!-- Is Active Field (20%) -->
+                <div class="is-active-col">
+                  <div class="form-field">
+                    <div class="form-check">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        id="isActive"
+                        formControlName="isActive"
+                      >
+                      <label class="form-check-label" for="isActive">
+                        Is Active
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- New PDF Files Preview (always outside and below the row above) -->
+              @if (selectedFiles.length > 0) {
+                <div class="form-field full-width file-previews mt-3">
+                  <h6>New PDF Files:</h6>
+                  <div class="preview-grid compact">
+                    @for (file of selectedFiles; track $index) {
+                      <div class="preview-item">
+                        <div class="pdf-preview">
+                          <div class="pdf-icon">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                          </div>
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-outline-danger remove-btn"
+                            (click)="removeFile($index)"
+                          >
+                            <i class="bi bi-x"></i>
+                          </button>
+                        </div>
+                        <div class="preview-info">
+                          <small class="text-muted" [title]="file.name">{{ file.name }}</small>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+              @if (getAttachmentsArray().length > 0) {
+                <div class="form-field full-width existing-attachments mt-3">
+                  <h6>Existing PDF Files:</h6>
+                  <div class="preview-grid compact">
+                    @for (attachment of getAttachmentsArray().controls; track $index) {
+                      <div class="preview-item">
+                        <div class="pdf-preview">
+                          <div class="pdf-icon">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                          </div>
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-outline-danger remove-btn"
+                            (click)="removeExistingAttachment($index)"
+                          >
+                            <i class="bi bi-x"></i>
+                          </button>
+                        </div>
+                        <div class="preview-info">
+                          <small class="text-muted" [title]="attachment.value.fileName">{{ attachment.value.fileName }}</small>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="isLoading">
+            <i class="bi bi-x-circle me-1"></i>
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="editForm.invalid || isLoading">
+            @if (isLoading) {
+              <i class="bi bi-hourglass-split me-1"></i>
+              Saving...
+            } @else {
+              <i class="bi bi-check-circle me-1"></i>
+              {{ isEditMode ? 'Update' : 'Save' }}
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

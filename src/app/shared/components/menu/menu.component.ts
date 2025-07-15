@@ -8,14 +8,35 @@ import { Router } from '@angular/router';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent {
-  showDropdown = false;
+  showUserDropdown = false;
+  showGrosseryDropdown = false;
 
   constructor(private router: Router) {}
+  
   onCellActionClick(){
 
   }
+  
+  toggleUserDropdown() {
+    this.showUserDropdown = !this.showUserDropdown;
+    // Close other dropdowns
+    this.showGrosseryDropdown = false;
+  }
+  
+  toggleGrosseryDropdown() {
+    this.showGrosseryDropdown = !this.showGrosseryDropdown;
+    // Close other dropdowns
+    this.showUserDropdown = false;
+  }
+  
   goToUser() {
     this.router.navigate(['/user/users']);
+    this.showUserDropdown = false;
+  }
+
+  goToNewUserInfoCategories() {
+    this.router.navigate(['/user/categories']);
+    this.showUserDropdown = false;
   }
 
   goToFaq() {
@@ -25,5 +46,6 @@ export class MenuComponent {
 
   goToGrossery(option: string) {
     alert('Grossery option: ' + option);
+    this.showGrosseryDropdown = false;
   }
 }

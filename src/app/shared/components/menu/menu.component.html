@@ -1,10 +1,16 @@
 <nav class="menu-bar">
   <ul class="menu-list">
-    <li><button class="menu-btn" (click)="goToUser()">User</button></li>
+    <li class="dropdown">
+      <button class="menu-btn dropdown-toggle" type="button" (click)="toggleUserDropdown()">User</button>
+      <ul class="dropdown-menu" [class.show]="showUserDropdown">
+        <li><button class="dropdown-item" (click)="goToUser()">New User Info</button></li>
+        <li><button class="dropdown-item" (click)="goToNewUserInfoCategories()">Categories</button></li>
+      </ul>
+    </li>
     <li><button class="menu-btn" (click)="goToFaq()">FAQ</button></li>
     <li class="dropdown">
-      <button class="menu-btn dropdown-toggle" type="button" (click)="showDropdown = !showDropdown">Grossery</button>
-      <ul class="dropdown-menu" [class.show]="showDropdown">
+      <button class="menu-btn dropdown-toggle" type="button" (click)="toggleGrosseryDropdown()">Grossery</button>
+      <ul class="dropdown-menu" [class.show]="showGrosseryDropdown">
         <li><button class="dropdown-item" (click)="goToGrossery('Option 1')">Option 1</button></li>
         <li><button class="dropdown-item" (click)="goToGrossery('Option 2')">Option 2</button></li>
       </ul>

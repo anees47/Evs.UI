@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
-import { NewUserComponent } from './pages/user/components/userList/newUser.component';
-import { AddUpdateUserComponent } from './pages/user/components/saveUser/add-update-user.component';
+import { NewUserComponent } from './pages/NewUserInfo/components/NewUserInfo/userList/newUser.component';
+import { AddUpdateUserComponent } from './pages/NewUserInfo/components/NewUserInfo/saveUser/add-update-user.component';
+import { CategoriesComponent } from './pages/NewUserInfo/components/Categories/list/categories.component';
 
 export const routes: Routes = [
   { path: 'user/users', component: NewUserComponent },
   { path: 'user/save', component: AddUpdateUserComponent },
+  { path: 'user/categories', component: CategoriesComponent },
   { path: '', redirectTo: '/user/users', pathMatch: 'full' }
 ];
