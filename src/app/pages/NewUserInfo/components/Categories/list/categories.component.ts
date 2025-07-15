@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../../service/userService';
 import { Category } from '../../../../../shared/models/category.model';
+import { CreateCategoryDto, UpdateCategoryDto } from '../../../../../shared/models/category.dto';
 
 @Component({
   selector: 'e2v-categories',
@@ -30,7 +31,6 @@ export class CategoriesComponent implements OnInit {
   initializeForm() {
     this.categoryForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
-      description: ['', Validators.maxLength(200)],
       isActive: [true]
     });
   }
@@ -62,7 +62,6 @@ export class CategoriesComponent implements OnInit {
     this.editingCategoryId = category.id;
     this.categoryForm.patchValue({
       name: category.name,
-      description: category.description,
       isActive: category.isActive
     });
   }
@@ -75,16 +74,16 @@ export class CategoriesComponent implements OnInit {
       try {
         if (this.editingCategoryId) {
           console.log('Updating existing category with ID:', this.editingCategoryId);
-          
+
           // Update existing category
-          const categoryToUpdate: Category = {
+          const categoryToUpdate: UpdateCategoryDto = {
             id: this.editingCategoryId,
             name: formData.name,
             isActive: formData.isActive
           };
 
           console.log('Sending update payload:', categoryToUpdate);
-          
+
           // Call the updateCategory endpoint
           const result = await this.userService.updateCategory(categoryToUpdate);
           console.log('Update API response:', result);
@@ -92,11 +91,10 @@ export class CategoriesComponent implements OnInit {
           // Update local data
           const index = this.categories.findIndex(cat => cat.id === this.editingCategoryId);
           if (index !== -1) {
-            this.categories[index] = { 
-              ...this.categories[index], 
+            this.categories[index] = {
+              ...this.categories[index],
               name: formData.name,
-              description: formData.description,
-              isActive: formData.isActive 
+              isActive: formData.isActive
             };
             console.log('Local data updated successfully');
           }
@@ -104,21 +102,20 @@ export class CategoriesComponent implements OnInit {
           console.log('Category updated successfully in database');
         } else {
           console.log('Creating new category');
-          
+
           // Add new category
-          const newCategory: Category = {
-            id: 0, // Will be assigned by backend
+          const newCategory: CreateCategoryDto = {
             name: formData.name,
             isActive: formData.isActive
           };
 
           console.log('Sending create payload:', newCategory);
-          
+
           const result = await this.userService.createCategory(newCategory);
           console.log('Create API response:', result);
-          
-          if (result && result.length > 0) {
-            this.categories.push(result[0]);
+
+          if (result) {
+            this.categories.push(result);
             console.log('New category added to local data');
           }
         }
@@ -144,11 +141,16 @@ export class CategoriesComponent implements OnInit {
   async onDeleteCategory(categoryId: number) {
     if (confirm('Are you sure you want to delete this category?')) {
       try {
-        // Note: You might need to add a deleteCategory method to UserService
-        // For now, just remove from local array
-        this.categories = this.categories.filter(cat => cat.id !== categoryId);
+        const result = await this.userService.deleteCategory(categoryId);
+        if (result) {
+          this.categories = this.categories.filter(cat => cat.id !== categoryId);
+          console.log('Category deleted successfully');
+        } else {
+          alert('Failed to delete category. Please try again.');
+        }
       } catch (error) {
         console.error('Error deleting category:', error);
+        alert('Failed to delete category. Please try again.');
       }
     }
   }
@@ -157,23 +159,20 @@ export class CategoriesComponent implements OnInit {
     try {
       console.log('Toggling status for category:', category);
       console.log('Current isActive:', category.isActive);
-      
-      // Prepare the payload as per your specification
-      const categoryToUpdate: Category = {
+
+      // Use the updateCategory method for status updates
+      const categoryToUpdate: UpdateCategoryDto = {
         id: category.id,
         name: category.name,
         isActive: !category.isActive
       };
-      
-      console.log('Sending payload:', categoryToUpdate);
 
-      // Call the API to update the status
       const result = await this.userService.updateCategory(categoryToUpdate);
       console.log('API response:', result);
 
       // Update local data only if API call was successful
       category.isActive = !category.isActive;
-      
+
       console.log('Category status updated successfully. New isActive:', category.isActive);
     } catch (error) {
       console.error('Error updating category status:', error);

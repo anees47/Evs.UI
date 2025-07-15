@@ -84,22 +84,7 @@
                 }
               </div>
 
-              <div class="form-field">
-                <label for="description" class="form-label">Description</label>
-                <textarea
-                  id="description"
-                  class="form-control"
-                  formControlName="description"
-                  placeholder="Enter category description"
-                  rows="3"
-                  [class.is-invalid]="isFieldInvalid('description')"
-                ></textarea>
-                @if (isFieldInvalid('description')) {
-                  <div class="invalid-feedback">
-                    {{ getFieldError('description') }}
-                  </div>
-                }
-              </div>
+
 
               <div class="form-field">
                 <div class="form-check">

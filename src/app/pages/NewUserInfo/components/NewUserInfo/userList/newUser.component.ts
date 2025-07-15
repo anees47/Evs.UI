@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AddUpdateUserComponent } from '../saveUser/add-update-user.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -6,18 +6,20 @@ import { TableComponent } from '../../../../../shared/components/table/table.com
 import { TableSkeletonComponent } from '../../../../../shared/components/table-skeleton/table-skeleton/table-skeleton.component';
 import { TableColumnFilterEnum, TableColumnFilterStateEnum, TableColumnInterface, TableSortModeEnum } from '../../../../../shared/Modals/TableModals';
 import { UserService } from '../../../service/userService';
-import { NewUserInfo } from '../../../Modals/NewUserInfoModals';
+import { NewUserInfo, SearchNewUserInfosRequestDto } from '../../../Modals/NewUserInfoModals';
+import { DescriptionCellComponent } from './description-cell.component';
 
 @Component({
   selector: 'e2v-new-user',
   templateUrl: './newUser.component.html',
   styleUrls: ['./newUser.component.css'],
   standalone: true,
-  imports: [TableComponent, ReactiveFormsModule, CommonModule, AddUpdateUserComponent, TableSkeletonComponent]
+  imports: [TableComponent, ReactiveFormsModule, CommonModule, AddUpdateUserComponent, TableSkeletonComponent, DescriptionCellComponent]
 })
 export class NewUserComponent implements OnInit {
   // Real data from API
   userData: NewUserInfo[] = [];
+  searchUser: SearchNewUserInfosRequestDto = { pageNum: 1 }; // Fixed typo and initialized with required property
 
   // Column definitions updated for NewUserInfo
   userColumns: TableColumnInterface[] = [
@@ -52,7 +54,12 @@ export class NewUserComponent implements OnInit {
       sortable: true,
       width: 180,
       isVisible: true,
-      showMenu: false
+      showMenu: false,
+      template: DescriptionCellComponent,
+      callBack: (rowData: any) => ({
+        description: rowData.description,
+        maxLength: 'Help Center Reference Links: Use the links on the left hand side'.length
+      })
     },
     {
       name: 'categoryName',
@@ -110,8 +117,8 @@ export class NewUserComponent implements OnInit {
 
   // Feature flags
   showCheckboxes = false; // Flag to control checkbox visibility - hidden by default
-
-  constructor(private userService: UserService) { }
+  private userService = inject(UserService)
+  constructor() { }
 
   ngOnInit(): void {
     this.loadNewUserInfos();
@@ -121,7 +128,22 @@ export class NewUserComponent implements OnInit {
   async loadNewUserInfos() {
     try {
       this.loader = true;
-      this.userData = await this.userService.getNewUserInfos();
+
+      // Create complete payload with all properties
+      const completePayload: SearchNewUserInfosRequestDto = {
+        title: this.searchUser.title || undefined,
+        description: this.searchUser.description || undefined,
+        categoryId: this.searchUser.categoryId || undefined,
+        subcategoryId: this.searchUser.subcategoryId || undefined,
+        categoryName: this.searchUser.categoryName || undefined,
+        subcategoryName: this.searchUser.subcategoryName || undefined,
+        isActive: this.searchUser.isActive !== undefined ? this.searchUser.isActive : undefined,
+        pageSize: this.searchUser.pageSize || undefined,
+        pageNum: this.searchUser.pageNum || 1
+      };
+
+      console.log('Sending complete payload:', completePayload);
+      this.userData = await this.userService.getNewUserInfos(completePayload);
     } catch (error) {
       console.error('Error loading new user infos:', error);
       // Handle error appropriately
@@ -140,8 +162,6 @@ export class NewUserComponent implements OnInit {
   }
 
   onActionClick(action: { action: string; rowData: any }) {
-    console.log('Action clicked:', action);
-    debugger
     switch (action.action) {
       case 'view':
         this.handleViewAction(action.rowData);
@@ -169,13 +189,14 @@ export class NewUserComponent implements OnInit {
   handleViewAction(rowData: any) {
     console.log('Viewing user:', rowData);
     // Implement view logic here
-    alert(`Viewing user: ${rowData.name}`);
+    alert(`Viewing user: ${rowData.title}`);
   }
 
   handleEditAction(rowData: any) {
+    this.isEditDialogOpen.set(true);
     console.log('Editing user:', rowData);
     this.selectedRowForEdit = rowData;
-    this.isEditDialogOpen.set(true);
+
   }
 
   async handleDeleteAction(rowData: NewUserInfo) {
@@ -203,7 +224,7 @@ export class NewUserComponent implements OnInit {
   async onEditSave(updatedData: NewUserInfo) {
     try {
       console.log('Saving updated data:', updatedData);
-      
+
       // Update the data in the original array
       const index = this.userData.findIndex(user => user.id === updatedData.id);
       if (index !== -1) {
@@ -228,8 +249,9 @@ export class NewUserComponent implements OnInit {
   }
 
   openAddUserDialog() {
-    this.selectedRowForEdit = null;
     this.addUserDialogOpen.set(true);
+    this.selectedRowForEdit = null;
+
   }
 
   closeAddUserDialog() {
@@ -239,11 +261,11 @@ export class NewUserComponent implements OnInit {
   async onAddSave(newData: NewUserInfo) {
     try {
       console.log('Saving new data:', newData);
-      
+
       // Add the new data to the array
       this.userData.push(newData);
       console.log('User added successfully');
-      
+
       this.closeAddUserDialog();
     } catch (error) {
       console.error('Error adding user:', error);
@@ -251,7 +273,6 @@ export class NewUserComponent implements OnInit {
   }
 
   onAddCancel() {
-    console.log('Add cancelled');
     this.closeAddUserDialog();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TableColumnInterface } from '../../../../../shared/Modals/TableModals';
@@ -30,23 +30,11 @@ export class AddUpdateUserComponent implements OnInit, OnChanges {
   showCategoryDropdown = false;
   selectedCategory: any = null;
 
-  // Sample category data - replace with actual API call
-  availableCategories = [
-    { id: 1, name: 'Technology', description: 'Technology related content' },
-    { id: 2, name: 'Business', description: 'Business and management content' },
-    { id: 3, name: 'Education', description: 'Educational materials' },
-    { id: 4, name: 'Health', description: 'Health and wellness content' },
-    { id: 5, name: 'Finance', description: 'Financial and investment content' },
-    { id: 6, name: 'Marketing', description: 'Marketing and advertising content' },
-    { id: 7, name: 'Design', description: 'Design and creative content' },
-    { id: 8, name: 'Science', description: 'Scientific research and content' },
-    { id: 9, name: 'Sports', description: 'Sports and fitness content' },
-    { id: 10, name: 'Entertainment', description: 'Entertainment and media content' }
-  ];
-
+  // Categories will be loaded from database
+  availableCategories: any[] = [];
+  private fb= inject(FormBuilder);
+  private userService=inject(UserService);
   constructor(
-    private fb: FormBuilder,
-    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -107,7 +95,7 @@ export class AddUpdateUserComponent implements OnInit, OnChanges {
     if (this.rowData?.attachments) {
       const attachmentsArray = this.editForm.get('attachments') as FormArray;
       attachmentsArray.clear();
-      
+
       this.rowData.attachments.forEach(attachment => {
         attachmentsArray.push(this.fb.group({
           id: [attachment.id],
@@ -182,11 +170,20 @@ export class AddUpdateUserComponent implements OnInit, OnChanges {
 
     const searchTerm = value.toLowerCase().trim();
     this.categorySuggestions = this.availableCategories.filter(category =>
-      category.name.toLowerCase().includes(searchTerm) ||
-      category.description.toLowerCase().includes(searchTerm)
+      category.name.toLowerCase().includes(searchTerm)
     );
 
     this.showCategoryDropdown = this.categorySuggestions.length > 0;
+
+    // If no exact match found, clear the categoryId to prevent invalid selection
+    const exactMatch = this.availableCategories.find(category =>
+      category.name.toLowerCase() === searchTerm
+    );
+
+    if (!exactMatch) {
+      this.editForm.patchValue({ categoryId: '' }, { emitEvent: false });
+      this.selectedCategory = null;
+    }
   }
 
   selectCategory(category: any) {
@@ -195,7 +192,7 @@ export class AddUpdateUserComponent implements OnInit, OnChanges {
       categoryId: category.id,
       categoryName: category.name
     }, { emitEvent: false });
-    
+
     this.showCategoryDropdown = false;
     this.categorySuggestions = [];
   }
@@ -225,31 +222,48 @@ export class AddUpdateUserComponent implements OnInit, OnChanges {
 
   async loadCategories() {
     try {
+      console.log('Loading categories from database...');
       const response = await this.userService.getCategories();
+      console.log('Categories API response:', response);
+
       if (response && response.length > 0) {
         this.availableCategories = response;
+        console.log('Categories loaded successfully:', this.availableCategories.length, 'categories');
+      } else {
+        console.log('No categories found in database');
+        this.availableCategories = [];
       }
-      console.log('Categories loaded:', this.availableCategories.length);
     } catch (error) {
-      console.error('Error loading categories:', error);
-      // Keep using sample data if API fails
+      console.error('Error loading categories from database:', error);
+      // Initialize with empty array if API fails
+      this.availableCategories = [];
+      alert('Failed to load categories. Please try again.');
     }
   }
 
   async onSave() {
+    // Additional validation: ensure category is selected from existing categories
+    const categoryName = this.editForm.get('categoryName')?.value;
+    const categoryId = this.editForm.get('categoryId')?.value;
+
+    if (categoryName && !categoryId) {
+      alert('Please select a valid category from the dropdown. You cannot add new categories.');
+      return;
+    }
+
     if (this.editForm.valid) {
       try {
         this.isLoading = true;
         const formData = this.editForm.value;
-        
+
         // Prepare attachments data
         const attachments: NewUserInfoAttachment[] = [];
-        
+
         // Add existing attachments
         if (formData.attachments) {
           attachments.push(...formData.attachments);
         }
-        
+
         // Add new file attachments
         for (let i = 0; i < this.selectedFiles.length; i++) {
           const file = this.selectedFiles[i];
@@ -262,7 +276,7 @@ export class AddUpdateUserComponent implements OnInit, OnChanges {
           };
           attachments.push(attachment);
         }
-        
+
         if (this.isEditMode && this.rowData) {
           // Update existing user
           const updatedData: NewUserInfo = {

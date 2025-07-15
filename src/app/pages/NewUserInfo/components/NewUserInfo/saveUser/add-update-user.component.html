@@ -53,7 +53,7 @@
                     class="form-control"
                     id="categoryName"
                     formControlName="categoryName"
-                    placeholder="Type to search categories..."
+                    placeholder="Type to search existing categories..."
                     [class.is-invalid]="isFieldInvalid('categoryName')"
                     (focus)="onCategoryInputFocus()"
                     (input)="onCategoryNameChange($any($event.target).value)"
@@ -77,7 +77,6 @@
                           (click)="selectCategory(category)"
                         >
                           <div class="category-name">{{ category.name }}</div>
-                          <div class="category-description">{{ category.description }}</div>
                         </div>
                       }
                       @if (categorySuggestions.length === 0) {
