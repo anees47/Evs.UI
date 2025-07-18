@@ -59,15 +59,22 @@ export class TableComponent implements OnInit, OnDestroy {
       this.selectAll(this.configs.isCustomSelectionOn);
     });
 
-    // Reactive effect for search and filtering
+    // Reactive effect for search and filtering - watch filterText and columnFilters signals
     effect(() => {
+      // Access the signals to make the effect reactive to their changes
+      const currentFilterText = this.filterText();
+      const currentColumnFilters = this.columnFilters();
+      const currentMyFilteredView = this.myFilteredView();
+      
       this.applyFilter();
     });
   }
 
   ngOnInit() {
-    this.loadData(this.configs.data ?? []);
-    this.initializeColumnFilters();
+    if (this.configs) {
+      this.loadData(this.configs.data ?? []);
+      this.initializeColumnFilters();
+    }
   }
 
   ngOnDestroy() {
@@ -77,7 +84,7 @@ export class TableComponent implements OnInit, OnDestroy {
   loadData(data: any[]) {
     this.gridColumns = this.configs.columns || [];
     this.selectedColumns = (this.gridColumns || []).filter(x => x.isVisible !== false);
-    this.globalFilterFields = (this.gridColumns || []).map((x) => x.name);
+    this.globalFilterFields = (this.gridColumns || []).map((x) => x.field || x.name);
     this.filteredData.set(data || []);
     this.isLoading.set(false);
   }
@@ -97,9 +104,12 @@ export class TableComponent implements OnInit, OnDestroy {
     const currentColumnFilters = this.columnFilters();
     
     let filtered = this.configs.data.filter((row: any) => {
-      // Global filter
+      // Global filter - only search in visible column fields
       const matchesGlobal = !globalFilter || 
-        Object.values(row).some(val => String(val).toLowerCase().includes(globalFilter));
+        this.selectedColumns.some(col => {
+          const fieldValue = row[col.field || col.name];
+          return String(fieldValue || '').toLowerCase().includes(globalFilter);
+        });
       
       // Per-column filters
       const matchesColumns = Object.entries(currentColumnFilters).every(([field, value]) => {
@@ -127,7 +137,10 @@ export class TableComponent implements OnInit, OnDestroy {
     }
 
     this.filteredData.set(filtered);
-    this.cdr.detectChanges();
+    // Maintain filter state to prevent auto-closing
+    this.maintainFilterState();
+    // Only trigger change detection if necessary to prevent filter row from closing
+    // this.cdr.detectChanges();
   }
 
   sortData(data: any[], field: string, direction: 'asc' | 'desc'): any[] {
@@ -176,6 +189,9 @@ export class TableComponent implements OnInit, OnDestroy {
     const currentFilters = this.columnFilters();
     currentFilters[field] = value;
     this.columnFilters.set({...currentFilters});
+    
+    // Maintain filter state to prevent auto-closing
+    this.maintainFilterState();
   }
 
   onSort(field: string) {
@@ -366,6 +382,36 @@ export class TableComponent implements OnInit, OnDestroy {
   // Toggle filter visibility
   toggleFilterVisibility() {
     this.toggleFilter.update(current => !current);
+  }
+
+  // Handle filter input focus to ensure filter row stays open
+  onFilterInputFocus() {
+    if (this.toggleFilter() === false) {
+      this.toggleFilter.set(true);
+    }
+  }
+
+  // Handle filter input events to prevent auto-closing
+  onFilterInput(event: Event) {
+    // Prevent the filter row from closing during input
+    event.stopPropagation();
+  }
+
+  // Handle global filter changes
+  onGlobalFilterChange(value: string) {
+    this.filterText.set(value);
+    // Explicitly trigger filter application
+    this.applyFilter();
+  }
+
+  // Ensure filter state is maintained during operations
+  private maintainFilterState() {
+    // If filters are enabled and we have column filters, keep the filter row open
+    if (this.configs.enableColumnFilter && Object.values(this.columnFilters()).some(value => value !== '')) {
+      if (this.toggleFilter() === false) {
+        this.toggleFilter.set(true);
+      }
+    }
   }
 
   // Get filtered data count

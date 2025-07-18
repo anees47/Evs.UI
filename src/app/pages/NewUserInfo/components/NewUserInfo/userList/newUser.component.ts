@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, TemplateRef, viewChild } from '@angular/core';
 import { AddUpdateUserComponent } from '../saveUser/add-update-user.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -7,16 +7,18 @@ import { TableSkeletonComponent } from '../../../../../shared/components/table-s
 import { TableColumnFilterEnum, TableColumnFilterStateEnum, TableColumnInterface, TableSortModeEnum } from '../../../../../shared/Modals/TableModals';
 import { UserService } from '../../../service/userService';
 import { NewUserInfo, SearchNewUserInfosRequestDto } from '../../../Modals/NewUserInfoModals';
-import { DescriptionCellComponent } from './description-cell.component';
 
 @Component({
   selector: 'e2v-new-user',
   templateUrl: './newUser.component.html',
   styleUrls: ['./newUser.component.css'],
   standalone: true,
-  imports: [TableComponent, ReactiveFormsModule, CommonModule, AddUpdateUserComponent, TableSkeletonComponent, DescriptionCellComponent]
+  imports: [TableComponent, ReactiveFormsModule, CommonModule, AddUpdateUserComponent, TableSkeletonComponent]
 })
 export class NewUserComponent implements OnInit {
+
+  desctipionTemplate = viewChild<TemplateRef<any>>('desctipionTemplate');
+
   // Real data from API
   userData: NewUserInfo[] = [];
   searchUser: SearchNewUserInfosRequestDto = { pageNum: 1 }; // Fixed typo and initialized with required property
@@ -55,11 +57,7 @@ export class NewUserComponent implements OnInit {
       width: 180,
       isVisible: true,
       showMenu: false,
-      template: DescriptionCellComponent,
-      callBack: (rowData: any) => ({
-        description: rowData.description,
-        maxLength: 'Help Center Reference Links: Use the links on the left hand side'.length
-      })
+      template: this.desctipionTemplate()
     },
     {
       name: 'categoryName',
@@ -115,6 +113,12 @@ export class NewUserComponent implements OnInit {
   // Add user dialog state
   addUserDialogOpen = signal(false);
 
+  // Modal popup state
+  showDescriptionModal = signal(false);
+
+  // Modal popup state
+  description = signal("");
+
   // Feature flags
   showCheckboxes = false; // Flag to control checkbox visibility - hidden by default
   private userService = inject(UserService)
@@ -122,6 +126,15 @@ export class NewUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadNewUserInfos();
+    this.initializeColumnsWithTemplate();
+  }
+
+  private initializeColumnsWithTemplate() {
+    // Update the description column to include the template
+    const descriptionColumn = this.userColumns.find(col => col.name === 'description');
+    if (descriptionColumn && this.desctipionTemplate()) {
+      descriptionColumn.template = this.desctipionTemplate();
+    }
   }
 
   // Load data from API
@@ -142,7 +155,6 @@ export class NewUserComponent implements OnInit {
         pageNum: this.searchUser.pageNum || 1
       };
 
-      console.log('Sending complete payload:', completePayload);
       this.userData = await this.userService.getNewUserInfos(completePayload);
     } catch (error) {
       console.error('Error loading new user infos:', error);
@@ -274,5 +286,16 @@ export class NewUserComponent implements OnInit {
 
   onAddCancel() {
     this.closeAddUserDialog();
+  }
+
+  // Modal popup methods
+  openDescriptionModal(item: any) {
+    this.description.set(item.description);
+    this.showDescriptionModal.set(true);
+  }
+
+  closeDescriptionModal() {
+    this.showDescriptionModal.set(false);
+    this.description.set("");
   }
 }

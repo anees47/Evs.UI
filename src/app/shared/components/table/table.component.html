@@ -10,7 +10,7 @@
             class="search-input"
             placeholder="Search records..."
             [ngModel]="filterText()"
-            (ngModelChange)="filterText.set($event)"
+            (ngModelChange)="onGlobalFilterChange($event)"
           >
         </div>
       }
@@ -137,7 +137,7 @@
           }
 
           @for (col of selectedColumns; track col.name) {
-            <th class="column-header" [style.width]="col.width + 'px'">
+            <th class="column-header" [style]="'min-width:'+ col.width + 'px'">
               <div class="header-content">
                 <span class="header-text">{{ col.nameText }}</span>
                 @if (col.sortable) {
@@ -154,7 +154,7 @@
 
         <!-- Filter Row -->
         @if (toggleFilter()) {
-          <tr class="filter-row">
+          <tr class="filter-row" (click)="$event.stopPropagation()">
             @if (configs.enableColumnFilter) {
               <th class="filter-cell">
                 <span class="filter-label">#</span>
@@ -169,6 +169,8 @@
                       class="form-select form-select-sm"
                       [ngModel]="getColumnFilter(col.field || col.name)"
                       (ngModelChange)="onColumnFilterChange(col.field || col.name, $event)"
+                      (focus)="onFilterInputFocus()"
+                      (input)="onFilterInput($event)"
                     >
                       <option value="">Select...</option>
                       @for (opt of col.filterValues; track opt.value) {
@@ -181,6 +183,8 @@
                       class="form-control form-control-sm"
                       [ngModel]="getColumnFilter(col.field || col.name)"
                       (ngModelChange)="onColumnFilterChange(col.field || col.name, $event)"
+                      (focus)="onFilterInputFocus()"
+                      (input)="onFilterInput($event)"
                     >
                   } @else {
                     <input
@@ -189,6 +193,8 @@
                       placeholder="Filter {{ col.nameText }}"
                       [ngModel]="getColumnFilter(col.field || col.name)"
                       (ngModelChange)="onColumnFilterChange(col.field || col.name, $event)"
+                      (focus)="onFilterInputFocus()"
+                      (input)="onFilterInput($event)"
                     >
                   }
                 } @else {

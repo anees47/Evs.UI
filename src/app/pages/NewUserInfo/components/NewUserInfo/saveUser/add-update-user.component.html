@@ -48,43 +48,50 @@
                   <span class="required-indicator">*</span>
                 </label>
                 <div class="autocomplete-container">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="categoryName"
-                    formControlName="categoryName"
-                    placeholder="Type to search existing categories..."
-                    [class.is-invalid]="isFieldInvalid('categoryName')"
-                    (focus)="onCategoryInputFocus()"
-                    (input)="onCategoryNameChange($any($event.target).value)"
-                    (blur)="onCategoryInputBlur()"
-                    autocomplete="off"
-                  >
-                  @if (selectedCategory) {
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-outline-secondary clear-btn"
-                      (click)="clearCategorySelection()"
-                    >
-                      <i class="bi bi-x"></i>
-                    </button>
-                  }
-                  @if (showCategoryDropdown) {
-                    <div class="autocomplete-dropdown">
-                      @for (category of categorySuggestions; track category.id) {
-                        <div
-                          class="dropdown-item"
-                          (click)="selectCategory(category)"
-                        >
-                          <div class="category-name">{{ category.name }}</div>
-                        </div>
-                      }
-                      @if (categorySuggestions.length === 0) {
-                        <div class="dropdown-item no-results">
-                          No categories found
-                        </div>
-                      }
+                  @if (isLoadingCategories) {
+                    <div class="form-control loading-placeholder">
+                      <i class="bi bi-hourglass-split me-2"></i>
+                      Loading categories...
                     </div>
+                  } @else {
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="categoryName"
+                      formControlName="categoryName"
+                      placeholder="Type to search existing categories..."
+                      [class.is-invalid]="isFieldInvalid('categoryName')"
+                      (focus)="onCategoryInputFocus()"
+                      (input)="onCategoryNameChange($any($event.target).value)"
+                      (blur)="onCategoryInputBlur()"
+                      autocomplete="off"
+                    >
+                    @if (selectedCategory) {
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-outline-secondary clear-btn"
+                        (click)="clearCategorySelection()"
+                      >
+                        <i class="bi bi-x"></i>
+                      </button>
+                    }
+                    @if (showCategoryDropdown) {
+                      <div class="autocomplete-dropdown">
+                        @for (category of categorySuggestions; track category.id) {
+                          <div
+                            class="dropdown-item"
+                            (click)="selectCategory(category)"
+                          >
+                            <div class="category-name">{{ category.name }}</div>
+                          </div>
+                        }
+                        @if (categorySuggestions.length === 0) {
+                          <div class="dropdown-item no-results">
+                            No categories found
+                          </div>
+                        }
+                      </div>
+                    }
                   }
                 </div>
                 @if (isFieldInvalid('categoryName')) {
@@ -228,14 +235,17 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="isLoading">
+          <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="isLoading || isLoadingCategories">
             <i class="bi bi-x-circle me-1"></i>
             Cancel
           </button>
-          <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="editForm.invalid || isLoading">
+          <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="editForm.invalid || isLoading || isLoadingCategories" [class.loading-categories]="isLoadingCategories">
             @if (isLoading) {
               <i class="bi bi-hourglass-split me-1"></i>
               Saving...
+            } @else if (isLoadingCategories) {
+              <i class="bi bi-hourglass-split me-1"></i>
+              Loading...
             } @else {
               <i class="bi bi-check-circle me-1"></i>
               {{ isEditMode ? 'Update' : 'Save' }}

@@ -1,8 +1,7 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { TableColumnInterface } from '../../../../../shared/Modals/TableModals';
-import { NewUserInfo, NewUserInfoAttachment } from '../../../Modals/NewUserInfoModals';
+import { NewUserInfo, UpdateNewUserInfoRequestDto, CreateNewUserInfoRequestDto } from '../../../Modals/NewUserInfoModals';
 import { UserService } from '../../../service/userService';
 
 @Component({
@@ -12,7 +11,7 @@ import { UserService } from '../../../service/userService';
   templateUrl: './add-update-user.component.html',
   styleUrls: ['./add-update-user.component.css']
 })
-export class AddUpdateUserComponent implements OnInit, OnChanges {
+export class AddUpdateUserComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isOpen = false;
   @Input() rowData: NewUserInfo | null = null;
   @Input() isEditMode = false;
@@ -24,6 +23,7 @@ export class AddUpdateUserComponent implements OnInit, OnChanges {
   isLoading = false;
   selectedFiles: File[] = [];
   previewUrls: string[] = [];
+  deletedAttachmentIds: number[] = []; // Track deleted attachment IDs
 
   // Category autocomplete properties
   categorySuggestions: any[] = [];
@@ -32,6 +32,7 @@ export class AddUpdateUserComponent implements OnInit, OnChanges {
 
   // Categories will be loaded from database
   availableCategories: any[] = [];
+  isLoadingCategories = false;
   private fb= inject(FormBuilder);
   private userService=inject(UserService);
   constructor(
@@ -40,11 +41,23 @@ export class AddUpdateUserComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.createForm();
     this.loadCategories();
+    // If rowData is already available, populate the form
+    if (this.rowData && this.editForm) {
+      this.populateForm();
+    }
+  }
+
+  ngOnDestroy() {
+    // Clean up any subscriptions if needed
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['rowData'] && this.rowData && this.editForm) {
-      this.populateForm();
+    if (changes['rowData'] && this.rowData) {
+      // If form is already created, populate it immediately
+      if (this.editForm) {
+        this.populateForm();
+      }
+      // If form is not created yet, it will be populated in ngOnInit
     }
   }
 
@@ -53,50 +66,57 @@ export class AddUpdateUserComponent implements OnInit, OnChanges {
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       categoryId: ['', [Validators.required]],
-      categoryName: ['', [Validators.required]],
+      categoryName: [''],
+      subcategoryId: [null],
       isActive: [true],
-      totalItems: [0, [Validators.required, Validators.min(0)]],
+      totalItems: [0],
       attachments: this.fb.array([])
     });
 
-    // Add listener for category name changes
+    // Add listener for category name changes (for UI purposes only)
     this.editForm.get('categoryName')?.valueChanges.subscribe(value => {
       this.onCategoryNameChange(value);
     });
   }
 
   populateForm() {
-    if (this.editForm && this.rowData) {
+    const currentRowData = this.rowData;
+    if (this.editForm && currentRowData) {
+      // Reset deleted attachment IDs for new edit session
+      this.deletedAttachmentIds = [];
+
       this.editForm.patchValue({
-        title: this.rowData.title || '',
-        description: this.rowData.description || '',
-        categoryId: this.rowData.categoryId || '',
-        categoryName: this.rowData.categoryName || '',
-        isActive: this.rowData.isActive ?? true,
-        totalItems: this.rowData.totalItems || 0
+        title: currentRowData.title || '',
+        description: currentRowData.description || '',
+        categoryId: currentRowData.categoryId || '',
+        subcategoryId: currentRowData.subcategoryId || null,
+        categoryName: currentRowData.categoryName || '',
+        isActive: currentRowData.isActive ?? true,
+        totalItems: currentRowData.totalItems || 0
       });
 
       // Set selected category if editing
-      if (this.rowData.categoryId && this.rowData.categoryName) {
+      if (currentRowData.categoryId && currentRowData.categoryName) {
         this.selectedCategory = {
-          id: this.rowData.categoryId,
-          name: this.rowData.categoryName
+          id: currentRowData.categoryId,
+          name: currentRowData.categoryName
         };
       }
 
       // Populate attachments if they exist
-      if (this.rowData.attachments && this.rowData.attachments.length > 0) {
+      if (currentRowData.attachments && currentRowData.attachments.length > 0) {
         this.populateAttachments();
       }
     }
   }
 
   populateAttachments() {
-    if (this.rowData?.attachments) {
+    const currentRowData = this.rowData;
+    if (currentRowData?.attachments) {
       const attachmentsArray = this.editForm.get('attachments') as FormArray;
       attachmentsArray.clear();
 
-      this.rowData.attachments.forEach(attachment => {
+      currentRowData.attachments.forEach(attachment => {
         attachmentsArray.push(this.fb.group({
           id: [attachment.id],
           fileName: [attachment.fileName],
@@ -144,13 +164,18 @@ export class AddUpdateUserComponent implements OnInit, OnChanges {
     this.previewUrls.push('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwIDVIMzBWMzVIMTBWNVoiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iIzMzMzMzMyIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxwYXRoIGQ9Ik0xNSAxNUgyNVYxOEgxNVYxNVoiIGZpbGw9IiMzMzMzMzMiLz4KPHBhdGggZD0iTTE1IDIwSDI1VjIzSDE1VjIwWiIgZmlsbD0iIzMzMzMzMyIvPgo8cGF0aCBkPSJNMTUgMjVIMjVWMjhIMTVWMjVaIiBmaWxsPSIjMzMzMzMzIi8+CjxwYXRoIGQ9Ik0xNSAzMEgyNVYzM0gxNVYzMFoiIGZpbGw9IiMzMzMzMzMiLz4KPC9zdmc+');
   }
 
-  removeFile(index: number) {
-    this.selectedFiles.splice(index, 1);
-    this.previewUrls.splice(index, 1);
-  }
+   removeFile(index: number) {
+     this.selectedFiles.splice(index, 1);
+     this.previewUrls.splice(index, 1);
+   }
 
   removeExistingAttachment(index: number) {
     const attachmentsArray = this.editForm.get('attachments') as FormArray;
+    const attachmentToRemove = attachmentsArray.at(index).value;
+    if (attachmentToRemove.id && attachmentToRemove.id > 0) {
+      this.deletedAttachmentIds.push(attachmentToRemove.id);
+    }
+
     attachmentsArray.removeAt(index);
   }
 
@@ -222,22 +247,19 @@ export class AddUpdateUserComponent implements OnInit, OnChanges {
 
   async loadCategories() {
     try {
-      console.log('Loading categories from database...');
+      this.isLoadingCategories = true;
       const response = await this.userService.getCategories();
-      console.log('Categories API response:', response);
-
       if (response && response.length > 0) {
         this.availableCategories = response;
-        console.log('Categories loaded successfully:', this.availableCategories.length, 'categories');
       } else {
-        console.log('No categories found in database');
         this.availableCategories = [];
       }
     } catch (error) {
-      console.error('Error loading categories from database:', error);
       // Initialize with empty array if API fails
       this.availableCategories = [];
       alert('Failed to load categories. Please try again.');
+    } finally {
+      this.isLoadingCategories = false;
     }
   }
 
@@ -256,48 +278,46 @@ export class AddUpdateUserComponent implements OnInit, OnChanges {
         this.isLoading = true;
         const formData = this.editForm.value;
 
-        // Prepare attachments data
-        const attachments: NewUserInfoAttachment[] = [];
+        // Combine selectedFiles and existing attachments from form
+        const combinedAttachments = [...this.selectedFiles];
 
-        // Add existing attachments
-        if (formData.attachments) {
-          attachments.push(...formData.attachments);
-        }
-
-        // Add new file attachments
-        for (let i = 0; i < this.selectedFiles.length; i++) {
-          const file = this.selectedFiles[i];
-          const attachment: NewUserInfoAttachment = {
-            id: 0, // Will be assigned by backend
-            fileName: file.name,
-            fileType: file.type,
-            storagePath: '', // Will be set by backend after upload
-            referenceId: 0 // Will be set by backend
-          };
-          attachments.push(attachment);
+        // Add existing attachments that haven't been deleted
+        if (formData.attachments && formData.attachments.length > 0) {
+          formData.attachments.forEach((attachment: any) => {
+            // Only include attachments that haven't been marked for deletion
+            if (!this.deletedAttachmentIds.includes(attachment.id)) {
+              combinedAttachments.push(attachment);
+            }
+          });
         }
 
         if (this.isEditMode && this.rowData) {
-          // Update existing user
-          const updatedData: NewUserInfo = {
-        ...this.rowData,
-            ...formData,
-            attachments: attachments
+          // Update existing user - match UpdateNewUserInfoRequestDto structure
+          const updatePayload = {
+            newUserInfoId: this.rowData.id,
+            title: formData.title,
+            description: formData.description,
+            categoryId: formData.categoryId,
+            isActive: formData.isActive,
+            attachments: combinedAttachments, // Combined files and existing attachments
+            deletedAttachmentIds: this.deletedAttachmentIds // IDs of deleted attachments
           };
-          const result = await this.userService.updateNewUserInfo(updatedData);
+          const result = await this.userService.updateNewUserInfoWithRequest(updatePayload);
           this.save.emit(result);
         } else {
-          // Create new user
-          const newData: Partial<NewUserInfo> = {
-            ...formData,
-            id: 0, // Will be assigned by backend
-            attachments: attachments
+          // Create new user - use CreateNewUserInfoRequestDto structure
+          const createPayload: CreateNewUserInfoRequestDto = {
+            title: formData.title,
+            description: formData.description,
+            categoryId: formData.categoryId,
+            subcategoryId: formData.subcategoryId || undefined,
+            isActive: formData.isActive,
+            attachments: combinedAttachments // Combined files and existing attachments
           };
-          const result = await this.userService.createNewUserInfo(newData);
+          const result = await this.userService.createNewUserInfoWithRequest(createPayload);
           this.save.emit(result);
         }
       } catch (error) {
-        console.error('Error saving user:', error);
         // Handle error appropriately
       } finally {
         this.isLoading = false;
@@ -308,12 +328,37 @@ export class AddUpdateUserComponent implements OnInit, OnChanges {
   }
 
   onCancel() {
+    this.resetFormState();
     this.cancel.emit();
     this.close.emit();
   }
 
   onClose() {
+    this.resetFormState();
     this.close.emit();
+  }
+
+  private resetFormState() {
+    this.selectedFiles = [];
+    this.previewUrls = [];
+    this.deletedAttachmentIds = [];
+    this.selectedCategory = null;
+    this.categorySuggestions = [];
+    this.showCategoryDropdown = false;
+
+    // Reset form if it exists
+    if (this.editForm) {
+      this.editForm.reset({
+        title: '',
+        description: '',
+        categoryId: '',
+        categoryName: '',
+        subcategoryId: null,
+        isActive: true,
+        totalItems: 0,
+        attachments: this.fb.array([])
+      });
+    }
   }
 
   markFormGroupTouched() {

@@ -202,21 +202,37 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: #667eea;
   border-color: #667eea;
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  background-color: #5a6fd8;
+  border-color: #5a6fd8;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .btn-primary:disabled {
+  background-color: #a8b5e6;
+  border-color: #a8b5e6;
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
+  color: white !important;
+}
+
+/* Special styling for when categories are loading */
+.btn-primary.loading-categories:disabled {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  opacity: 0.8;
+  color: white !important;
+}
+
+.btn-primary.loading-categories:disabled i {
+  animation: spin 1s linear infinite;
 }
 
 .btn-secondary {
@@ -740,4 +756,27 @@
   margin-left: 0;
   margin-right: 0;
   display: block;
+}
+
+/* Loading placeholder styles */
+.loading-placeholder {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  font-style: italic;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  min-height: 32px;
+}
+
+.loading-placeholder i {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 } 
