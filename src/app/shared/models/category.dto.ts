@@ -6,7 +6,7 @@ export interface CreateCategoryDto {
 }
 
 export interface UpdateCategoryDto {
-  id: number;
+  categoryId: number;
   name: string;
   isActive: boolean;
 }

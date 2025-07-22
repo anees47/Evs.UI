@@ -214,7 +214,7 @@ export class AddUpdateUserComponent implements OnInit, OnChanges, OnDestroy {
   selectCategory(category: any) {
     this.selectedCategory = category;
     this.editForm.patchValue({
-      categoryId: category.id,
+      categoryId: category.categoryId,
       categoryName: category.name
     }, { emitEvent: false });
 

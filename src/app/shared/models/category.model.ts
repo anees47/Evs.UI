@@ -3,3 +3,8 @@ export interface Category {
   name: string;
   isActive: boolean;
 }
+export interface updateCategory {
+  categoryId: number;
+  name: string;
+  isActive: boolean;
+}

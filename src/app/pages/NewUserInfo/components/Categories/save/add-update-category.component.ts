@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Category } from '../../../../../shared/models/category.model';
+import { Category, updateCategory } from '../../../../../shared/models/category.model';
 
 @Component({
   selector: 'e2v-add-update-category',
@@ -14,7 +14,7 @@ export class AddUpdateCategoryComponent implements OnInit, OnChanges {
   @Input() isOpen = false;
   @Input() rowData: Category | null = null;
   @Input() isEditMode = false;
-  @Output() save = new EventEmitter<Category>();
+ // @Output() save = new EventEmitter<Category>();
   @Output() cancel = new EventEmitter<void>();
   @Output() close = new EventEmitter<void>();
 
@@ -49,37 +49,37 @@ export class AddUpdateCategoryComponent implements OnInit, OnChanges {
     }
   }
 
-  async onSave() {
-    if (this.editForm.valid) {
-      try {
-        this.isLoading = true;
-        const formData = this.editForm.value;
+  // async onSave() {
+  //   if (this.editForm.valid) {
+  //     try {
+  //       this.isLoading = true;
+  //       const formData = this.editForm.value;
         
-        if (this.isEditMode && this.rowData) {
-          // Update existing category
-          const updatedData: Category = {
-            ...this.rowData,
-            ...formData
-          };
-          this.save.emit(updatedData);
-        } else {
-          // Create new category
-          const newData: Partial<Category> = {
-            ...formData,
-            id: 0 // Will be assigned by backend
-          };
-          this.save.emit(newData as Category);
-        }
-      } catch (error) {
-        console.error('Error saving category:', error);
-        // Handle error appropriately
-      } finally {
-        this.isLoading = false;
-      }
-    } else {
-      this.markFormGroupTouched();
-    }
-  }
+  //       if (this.isEditMode && this.rowData) {
+  //         // Update existing category
+  //         const updatedData: updateCategory = {
+  //           ...this.rowData,
+  //           ...formData
+  //         };
+  //         this.save.emit(updatedData);
+  //       } else {
+  //         // Create new category
+  //         const newData: Partial<updateCategory> = {
+  //           ...formData,
+  //           id: 0 // Will be assigned by backend
+  //         };
+  //         this.save.emit(newData as Category);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error saving category:', error);
+  //       // Handle error appropriately
+  //     } finally {
+  //       this.isLoading = false;
+  //     }
+  //   } else {
+  //     this.markFormGroupTouched();
+  //   }
+  // }
 
   onCancel() {
     this.cancel.emit();

@@ -14,7 +14,7 @@ export class UserService {
 
   // Get all users
   async getNewUserInfos(filter: SearchNewUserInfosRequestDto): Promise<NewUserInfo[]> {
-    const response = await lastValueFrom(this.apiService.Get(ENDPOINTS_CONSTANTS.newUserInfo.getAll, filter));
+    const response = await lastValueFrom(this.apiService.Post(ENDPOINTS_CONSTANTS.newUserInfo.getAll, filter));
     return response.payload || [];
   }
 
@@ -70,9 +70,16 @@ export class UserService {
     for (let [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
-    
-    const response = await lastValueFrom(this.apiService.Post(ENDPOINTS_CONSTANTS.newUserInfo.create, formData));
-    return response.payload as unknown as NewUserInfo;
+    try{
+          const response = await lastValueFrom(this.apiService.Post(ENDPOINTS_CONSTANTS.newUserInfo.create, formData));
+          return response.payload as unknown as NewUserInfo;
+    }
+    catch(e){
+      console.log(e);
+      debugger;
+      return null as unknown as NewUserInfo;
+    }
+
   }
 
   // Update user
@@ -103,25 +110,31 @@ export class UserService {
     
     // Add attachments
     if (updateRequest.attachments) {
-      updateRequest.attachments.forEach((file, index) => {
-        formData.append(`Attachments`, file);
+      updateRequest.attachments.forEach((file: File) => {
+        formData.append('Attachments', file);
       });
     }
-    
     // Add deleted attachment IDs
     if (updateRequest.deletedAttachmentIds) {
-      updateRequest.deletedAttachmentIds.forEach((id, index) => {
-        formData.append(`DeletedAttachmentIds`, id.toString());
+      updateRequest.deletedAttachmentIds.forEach((id: number) => {
+        formData.append('DeletedAttachmentIds', id.toString());
       });
-    }
+    }else {
+       formData.append('DeletedAttachmentIds', '');
+      }
     
     console.log('Update FormData entries:');
     for (let [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
-    
-    const response = await lastValueFrom(this.apiService.Put(ENDPOINTS_CONSTANTS.newUserInfo.update, formData));
-    return response.payload as unknown as NewUserInfo;
+    try{
+      const response = await lastValueFrom(this.apiService.Put(ENDPOINTS_CONSTANTS.newUserInfo.update, formData));
+      return response.payload as unknown as NewUserInfo;
+    }
+    catch(e){
+      console.log(e);
+      return {} as NewUserInfo
+    }
   }
 
   // Delete user
@@ -134,7 +147,7 @@ export class UserService {
   // Get categories
   async getCategories(activeOnly: boolean = true): Promise<CategoryResponseDto[]> {
     const url = `${ENDPOINTS_CONSTANTS.newUserInfo.category.getAll}/${activeOnly}`;
-    const response = await lastValueFrom(this.apiService.Post(url, {}));
+    const response = await lastValueFrom(this.apiService.Get(url, {}));
     return response.payload || [];
   }
 
@@ -151,7 +164,7 @@ export class UserService {
   }
     // Update category
   async updateCategory(category: UpdateCategoryDto): Promise<CategoryResponseDto> {
-    const response = await lastValueFrom(this.apiService.Post(ENDPOINTS_CONSTANTS.newUserInfo.category.update, category));
+    const response = await lastValueFrom(this.apiService.Put(ENDPOINTS_CONSTANTS.newUserInfo.category.update, category));
     return response.payload as unknown as CategoryResponseDto;
   }
 
