@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges, inject, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray, ValidatorFn, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NewUserInfo, UpdateNewUserInfoRequestDto, CreateNewUserInfoRequestDto } from '../../../Modals/NewUserInfoModals';
 import { UserService } from '../../../service/userService';
@@ -25,10 +25,9 @@ export class AddUpdateUserComponent implements OnInit, OnChanges, OnDestroy {
   previewUrls: string[] = [];
   deletedAttachmentIds: number[] = []; // Track deleted attachment IDs
 
-  // Category autocomplete properties
-  categorySuggestions: any[] = [];
-  showCategoryDropdown = false;
-  selectedCategory: any = null;
+  // Remove all category autocomplete and categoryName logic
+  // Only keep categoryId in the form
+  // Remove categorySelectionValidator and related fields/methods
 
   // Categories will be loaded from database
   availableCategories: any[] = [];
@@ -66,44 +65,25 @@ export class AddUpdateUserComponent implements OnInit, OnChanges, OnDestroy {
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       categoryId: ['', [Validators.required]],
-      categoryName: [''],
-      subcategoryId: [null],
       isActive: [true],
       totalItems: [0],
       attachments: this.fb.array([])
-    });
-
-    // Add listener for category name changes (for UI purposes only)
-    this.editForm.get('categoryName')?.valueChanges.subscribe(value => {
-      this.onCategoryNameChange(value);
     });
   }
 
   populateForm() {
     const currentRowData = this.rowData;
     if (this.editForm && currentRowData) {
-      // Reset deleted attachment IDs for new edit session
       this.deletedAttachmentIds = [];
-
       this.editForm.patchValue({
         title: currentRowData.title || '',
         description: currentRowData.description || '',
         categoryId: currentRowData.categoryId || '',
         subcategoryId: currentRowData.subcategoryId || null,
-        categoryName: currentRowData.categoryName || '',
         isActive: currentRowData.isActive ?? true,
         totalItems: currentRowData.totalItems || 0
       });
-
-      // Set selected category if editing
-      if (currentRowData.categoryId && currentRowData.categoryName) {
-        this.selectedCategory = {
-          id: currentRowData.categoryId,
-          name: currentRowData.categoryName
-        };
-      }
-
-      // Populate attachments if they exist
+      // No selectedCategory or categoryName logic needed
       if (currentRowData.attachments && currentRowData.attachments.length > 0) {
         this.populateAttachments();
       }
@@ -184,71 +164,19 @@ export class AddUpdateUserComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // Category autocomplete methods
-  onCategoryNameChange(value: string) {
-    if (!value || value.trim() === '') {
-      this.categorySuggestions = [];
-      this.showCategoryDropdown = false;
-      this.selectedCategory = null;
-      this.editForm.patchValue({ categoryId: '' }, { emitEvent: false });
-      return;
-    }
+  // Remove all category autocomplete and categoryName logic
+  // Only keep categoryId in the form
+  // Remove categorySelectionValidator and related fields/methods
 
-    const searchTerm = value.toLowerCase().trim();
-    this.categorySuggestions = this.availableCategories.filter(category =>
-      category.name.toLowerCase().includes(searchTerm)
-    );
-
-    this.showCategoryDropdown = this.categorySuggestions.length > 0;
-
-    // If no exact match found, clear the categoryId to prevent invalid selection
-    const exactMatch = this.availableCategories.find(category =>
-      category.name.toLowerCase() === searchTerm
-    );
-
-    if (!exactMatch) {
-      this.editForm.patchValue({ categoryId: '' }, { emitEvent: false });
-      this.selectedCategory = null;
-    }
-  }
-
-  selectCategory(category: any) {
-    this.selectedCategory = category;
-    this.editForm.patchValue({
-      categoryId: category.categoryId,
-      categoryName: category.name
-    }, { emitEvent: false });
-
-    this.showCategoryDropdown = false;
-    this.categorySuggestions = [];
-  }
-
-  onCategoryInputFocus() {
-    if (this.editForm.get('categoryName')?.value) {
-      this.onCategoryNameChange(this.editForm.get('categoryName')?.value);
-    }
-  }
-
-  onCategoryInputBlur() {
-    // Delay hiding dropdown to allow for click events
-    setTimeout(() => {
-      this.showCategoryDropdown = false;
-    }, 200);
-  }
-
-  clearCategorySelection() {
-    this.selectedCategory = null;
-    this.editForm.patchValue({
-      categoryId: '',
-      categoryName: ''
-    }, { emitEvent: false });
-    this.showCategoryDropdown = false;
-    this.categorySuggestions = [];
-  }
+  // Remove all category autocomplete and categoryName logic
+  // Only keep categoryId in the form
+  // Remove categorySelectionValidator and related fields/methods
 
   async loadCategories() {
     try {
       this.isLoadingCategories = true;
       const response = await this.userService.getCategories();
+      debugger
       if (response && response.length > 0) {
         this.availableCategories = response;
       } else {
@@ -264,55 +192,38 @@ export class AddUpdateUserComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   async onSave() {
-    // Additional validation: ensure category is selected from existing categories
-    const categoryName = this.editForm.get('categoryName')?.value;
-    const categoryId = this.editForm.get('categoryId')?.value;
-
-    if (categoryName && !categoryId) {
-      alert('Please select a valid category from the dropdown. You cannot add new categories.');
-      return;
-    }
-
     if (this.editForm.valid) {
       try {
         this.isLoading = true;
         const formData = this.editForm.value;
-
-        // Combine selectedFiles and existing attachments from form
         const combinedAttachments = [...this.selectedFiles];
-
-        // Add existing attachments that haven't been deleted
         if (formData.attachments && formData.attachments.length > 0) {
           formData.attachments.forEach((attachment: any) => {
-            // Only include attachments that haven't been marked for deletion
             if (!this.deletedAttachmentIds.includes(attachment.id)) {
               combinedAttachments.push(attachment);
             }
           });
         }
-
         if (this.isEditMode && this.rowData) {
-          // Update existing user - match UpdateNewUserInfoRequestDto structure
           const updatePayload = {
             newUserInfoId: this.rowData.id,
             title: formData.title,
             description: formData.description,
             categoryId: formData.categoryId,
             isActive: formData.isActive,
-            attachments: combinedAttachments, // Combined files and existing attachments
-            deletedAttachmentIds: this.deletedAttachmentIds // IDs of deleted attachments
+            attachments: combinedAttachments,
+            deletedAttachmentIds: this.deletedAttachmentIds
           };
           const result = await this.userService.updateNewUserInfoWithRequest(updatePayload);
           this.save.emit(result);
         } else {
-          // Create new user - use CreateNewUserInfoRequestDto structure
           const createPayload: CreateNewUserInfoRequestDto = {
             title: formData.title,
             description: formData.description,
             categoryId: formData.categoryId,
             subcategoryId: formData.subcategoryId || undefined,
             isActive: formData.isActive,
-            attachments: combinedAttachments // Combined files and existing attachments
+            attachments: combinedAttachments
           };
           const result = await this.userService.createNewUserInfoWithRequest(createPayload);
           this.save.emit(result);
@@ -342,9 +253,9 @@ export class AddUpdateUserComponent implements OnInit, OnChanges, OnDestroy {
     this.selectedFiles = [];
     this.previewUrls = [];
     this.deletedAttachmentIds = [];
-    this.selectedCategory = null;
-    this.categorySuggestions = [];
-    this.showCategoryDropdown = false;
+    // No selectedCategory or categoryName logic needed
+    this.availableCategories = [];
+    this.isLoadingCategories = false;
 
     // Reset form if it exists
     if (this.editForm) {
@@ -352,7 +263,6 @@ export class AddUpdateUserComponent implements OnInit, OnChanges, OnDestroy {
         title: '',
         description: '',
         categoryId: '',
-        categoryName: '',
         subcategoryId: null,
         isActive: true,
         totalItems: 0,
@@ -394,4 +304,10 @@ export class AddUpdateUserComponent implements OnInit, OnChanges, OnDestroy {
   getFieldValue(fieldName: string): any {
     return this.editForm.get(fieldName)?.value;
   }
+
+  // Custom validator to ensure categoryName and categoryId are consistent
+  // Remove all category autocomplete and categoryName logic
+  // Only keep categoryId in the form
+  // Remove categorySelectionValidator and related fields/methods
+
 }
