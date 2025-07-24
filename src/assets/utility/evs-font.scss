@@ -1,0 +1,1209 @@
+@font-face {
+  font-family: 'calimatic';
+  src:  url('/assets/calimatic-font/fonts/calimatic.eot');
+  src:  url('/assets/calimatic-font/fonts/calimatic.eot') format('embedded-opentype'),
+    url('/assets/calimatic-font/fonts/calimatic.ttf') format('truetype'),
+    url('/assets/calimatic-font/fonts/calimatic.woff') format('woff'),
+    url('/assets/calimatic-font/fonts/calimatic.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="ctxicon-"], [class*=" ctxicon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'calimatic' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ctxicon-ct-firstdayincourse:before {
+  content: "\ea73";
+}
+.ctxicon-ct-excuse:before {
+  content: "\ea74";
+}
+.ctxicon-ct-trial:before {
+  content: "\ea7f";
+}
+.ctxicon-ct-firstlocation:before {
+  content: "\ea80";
+}
+.ctxicon-ct-firstdaylevel:before {
+  content: "\ea81";
+}
+.ctxicon-ct-firstdayinclass:before {
+  content: "\ea82";
+}
+.ctxicon-ct-firstdayever:before {
+  content: "\ea79";
+}
+.ctxicon-ct-download:before {
+  content: "\ea7a";
+}
+.ctxicon-ct-makeup:before {
+  content: "\ea7b";
+}
+.ctxicon-ct-circletick:before {
+  content: "\ea7c";
+}
+.ctxicon-ct-circlecross:before {
+  content: "\ea7d";
+}
+.ctxicon-ct-cancel:before {
+  content: "\ea7e";
+}
+.ctxicon-audioIcon:before {
+  content: "\ea6b";
+}
+.ctxicon-videoIcon:before {
+  content: "\ea6e";
+}
+.ctxicon-videoIcon1:before {
+  content: "\ea70";
+}
+.ctxicon-active-students:before {
+  content: "\ea67";
+}
+.ctxicon-challenge-points:before {
+  content: "\ea68";
+}
+.ctxicon-collection:before {
+  content: "\ea69";
+}
+.ctxicon-dashboard:before {
+  content: "\ea6a";
+}
+.ctxicon-enrollments:before {
+  content: "\ea6c";
+}
+.ctxicon-franchise2:before {
+  content: "\ea6d";
+}
+.ctxicon-inventory:before {
+  content: "\ea6f";
+}
+.ctxicon-progress1:before {
+  content: "\ea71";
+}
+.ctxicon-redeem:before {
+  content: "\ea72";
+}
+.ctxicon-menu:before {
+  content: "\ea66";
+}
+.ctxicon-hands-helping-solid:before {
+  content: "\ea60";
+}
+.ctxicon-calendar-alt-regular:before {
+  content: "\ea61";
+}
+.ctxicon-chart-bar-regular:before {
+  content: "\ea62";
+}
+.ctxicon-chart-area-solid:before {
+  content: "\ea63";
+}
+.ctxicon-suitcase-solid:before {
+  content: "\ea64";
+}
+.ctxicon-rocket-solid:before {
+  content: "\ea65";
+}
+.ctxicon-boardConfig:before {
+  content: "\ea5c";
+}
+.ctxicon-fileConfig:before {
+  content: "\ea5d";
+}
+.ctxicon-plateformConfig:before {
+  content: "\ea5e";
+}
+.ctxicon-tempConfig:before {
+  content: "\ea5f";
+}
+.ctxicon-coin-stack:before {
+  content: "\ea5a";
+}
+.ctxicon-payementCoin:before {
+  content: "\ea5b";
+}
+.ctxicon-CMcross:before {
+  content: "\ea58";
+}
+.ctxicon-CMtick:before {
+  content: "\ea59";
+}
+.ctxicon-tickMrk:before {
+  content: "\ea57";
+}
+.ctxicon-birthday-cake:before {
+  content: "\ea56";
+}
+.ctxicon-gift:before {
+  content: "\ea54";
+}
+.ctxicon-contact:before {
+  content: "\ea55";
+}
+.ctxicon-failureDown:before {
+  content: "\ea51";
+}
+.ctxicon-responseTimeMeter:before {
+  content: "\ea52";
+}
+.ctxicon-successGrowth:before {
+  content: "\ea53";
+}
+.ctxicon-Cat-franchise:before {
+  content: "\ea50";
+}
+.ctxicon-franchise1:before {
+  content: "\ea4f";
+}
+.ctxicon-franchise:before {
+  content: "\ea4e";
+}
+.ctxicon-Categories:before {
+  content: "\ea4d";
+}
+.ctxicon-focus-area:before {
+  content: "\ea4c";
+}
+.ctxicon-Client:before {
+  content: "\ea4b";
+}
+.ctxicon-Flow:before {
+  content: "\ea49";
+}
+.ctxicon-WorkflowRound:before {
+  content: "\ea4a";
+}
+.ctxicon-Assets:before {
+  content: "\ea40";
+}
+.ctxicon-closeEmail:before {
+  content: "\ea41";
+}
+.ctxicon-contractAgreement:before {
+  content: "\ea42";
+}
+.ctxicon-customerPortal:before {
+  content: "\ea43";
+}
+.ctxicon-customerSupport:before {
+  content: "\ea44";
+}
+.ctxicon-GlobeCall:before {
+  content: "\ea45";
+}
+.ctxicon-on-call:before {
+  content: "\ea46";
+}
+.ctxicon-openEmail:before {
+  content: "\ea47";
+}
+.ctxicon-workflow:before {
+  content: "\ea48";
+}
+.ctxicon-SLA:before {
+  content: "\ea3f";
+}
+.ctxicon-Project_Team:before {
+  content: "\ea3e";
+}
+.ctxicon-Template:before {
+  content: "\e9d5";
+}
+.ctxicon-dataGrouping:before {
+  content: "\ea3b";
+}
+.ctxicon-sort-ascending:before {
+  content: "\ea3c";
+}
+.ctxicon-sort-descending:before {
+  content: "\ea3d";
+}
+.ctxicon-scrum:before {
+  content: "\ea3a";
+}
+.ctxicon-kanban:before {
+  content: "\ea38";
+}
+.ctxicon-waterfall:before {
+  content: "\ea39";
+}
+.ctxicon-draggable:before {
+  content: "\ea37";
+}
+.ctxicon-Arrow-Cycle:before {
+  content: "\ea35";
+}
+.ctxicon-rocket:before {
+  content: "\ea36";
+}
+.ctxicon-Agile_Test:before {
+  content: "\ea32";
+}
+.ctxicon-Board:before {
+  content: "\ea33";
+}
+.ctxicon-Plan:before {
+  content: "\ea34";
+}
+.ctxicon-new-tab:before {
+  content: "\ea31";
+}
+.ctxicon-Editors:before {
+  content: "\ea30";
+}
+.ctxicon-UserList:before {
+  content: "\ea2c";
+}
+.ctxicon-status:before {
+  content: "\ea2d";
+}
+.ctxicon-History:before {
+  content: "\ea2e";
+}
+.ctxicon-edit:before {
+  content: "\ea2f";
+}
+.ctxicon-check-mark:before {
+  content: "\ea2b";
+}
+.ctxicon-text-entry-box:before {
+  content: "\ea2a";
+}
+.ctxicon-check-box:before {
+  content: "\ea26";
+}
+.ctxicon-label:before {
+  content: "\ea27";
+}
+.ctxicon-Title:before {
+  content: "\ea28";
+}
+.ctxicon-textbox:before {
+  content: "\ea29";
+}
+.ctxicon-Admin:before {
+  content: "\ea21";
+}
+.ctxicon-admin1:before {
+  content: "\ea22";
+}
+.ctxicon-Home:before {
+  content: "\ea23";
+}
+.ctxicon-more:before {
+  content: "\ea24";
+}
+.ctxicon-Support:before {
+  content: "\ea25";
+}
+.ctxicon-certificate:before {
+  content: "\ea1f";
+}
+.ctxicon-certificate-repo:before {
+  content: "\ea20";
+}
+.ctxicon-big-robot-head:before {
+  content: "\ea1e";
+}
+.ctxicon-robot1:before {
+  content: "\ea1a";
+}
+.ctxicon-robot2:before {
+  content: "\ea1b";
+}
+.ctxicon-robot3:before {
+  content: "\ea1c";
+}
+.ctxicon-robot4:before {
+  content: "\ea1d";
+}
+.ctxicon-testcaseRobotic:before {
+  content: "\ea18";
+}
+.ctxicon-robotTestcase:before {
+  content: "\ea19";
+}
+.ctxicon-AgileTeam:before {
+  content: "\ea11";
+}
+.ctxicon-agilProjects:before {
+  content: "\ea12";
+}
+.ctxicon-jobSchedule:before {
+  content: "\ea13";
+}
+.ctxicon-PPM-workItem:before {
+  content: "\ea14";
+}
+.ctxicon-riskIssue:before {
+  content: "\ea15";
+}
+.ctxicon-valueStatement:before {
+  content: "\ea16";
+}
+.ctxicon-waterfallProjects:before {
+  content: "\ea17";
+}
+.ctxicon-worklog:before {
+  content: "\ea0d";
+}
+.ctxicon-addColumn:before {
+  content: "\ea07";
+}
+.ctxicon-defaultAttribute:before {
+  content: "\ea08";
+}
+.ctxicon-forms:before {
+  content: "\ea09";
+}
+.ctxicon-questionSetup:before {
+  content: "\ea0a";
+}
+.ctxicon-responseSetup:before {
+  content: "\ea0b";
+}
+.ctxicon-tab:before {
+  content: "\ea0c";
+}
+.ctxicon-AutomaticTest:before {
+  content: "\ea0e";
+}
+.ctxicon-behaviourDriven:before {
+  content: "\ea0f";
+}
+.ctxicon-manualTest:before {
+  content: "\ea10";
+}
+.ctxicon-unvotes:before {
+  content: "\ea05";
+}
+.ctxicon-votes:before {
+  content: "\ea06";
+}
+.ctxicon-notepad:before {
+  content: "\ea03";
+}
+.ctxicon-eye:before {
+  content: "\ea04";
+}
+.ctxicon-behaviourDriven-testcase:before {
+  content: "\ea02";
+}
+.ctxicon-manualTest-Plan:before {
+  content: "\e950";
+}
+.ctxicon-automationTest-plan:before {
+  content: "\ea01";
+}
+.ctxicon-automationTest-suite:before {
+  content: "\e9ff";
+}
+.ctxicon-manualTest-suite:before {
+  content: "\ea00";
+}
+.ctxicon-green-circle:before {
+  content: "\e9fe";
+  color: #3cb54a;
+}
+.ctxicon-tree-circle:before {
+  content: "\e9fd";
+}
+.ctxicon-OneDrive:before {
+  content: "\e9f1";
+}
+.ctxicon-computerUpload:before {
+  content: "\e9f0";
+}
+.ctxicon-dropbox:before {
+  content: "\e9ee";
+}
+.ctxicon-google-drive:before {
+  content: "\e9ef";
+}
+.ctxicon-unvote-user:before {
+  content: "\e9ed";
+}
+.ctxicon-Kanban-Board:before {
+  content: "\e9ec";
+}
+.ctxicon-wifiConnection:before {
+  content: "\e9eb";
+}
+.ctxicon-WaterfallManageRequirements:before {
+  content: "\e9ea";
+}
+.ctxicon-AgileExecuteAutomation:before {
+  content: "\e913";
+}
+.ctxicon-AgileExecuteManual:before {
+  content: "\e9ce";
+}
+.ctxicon-AgileExecuteScheduler:before {
+  content: "\e9cf";
+}
+.ctxicon-AgileExecuteTestPlansSuites:before {
+  content: "\e9d0";
+}
+.ctxicon-AgileExecuteTestResults:before {
+  content: "\e9d1";
+}
+.ctxicon-AgileManageTestcases:before {
+  content: "\e9d2";
+}
+.ctxicon-WaterfallExecuteAutomation:before {
+  content: "\e9d3";
+}
+.ctxicon-WaterfallExecuteManual:before {
+  content: "\e9d4";
+}
+.ctxicon-WaterfallExecuteScheduler:before {
+  content: "\1f313";
+}
+.ctxicon-WaterfallExecuteTestPlansSuites:before {
+  content: "\e9d6";
+}
+.ctxicon-WaterfallExecuteTestResults:before {
+  content: "\e9d7";
+}
+.ctxicon-WaterfallManageTestcases:before {
+  content: "\e9d8";
+}
+.ctxicon-AgileManageDefectsAll:before {
+  content: "\e9d9";
+}
+.ctxicon-AgileManageDefectsPersonal:before {
+  content: "\e9da";
+}
+.ctxicon-AgileManageDefinitionofDone:before {
+  content: "\e9db";
+}
+.ctxicon-AgileManageElementMap:before {
+  content: "\e9dc";
+}
+.ctxicon-AgileManageProcess:before {
+  content: "\e9dd";
+}
+.ctxicon-AgileManageRetrospective:before {
+  content: "\e9de";
+}
+.ctxicon-AgileManageUserstories:before {
+  content: "\e9df";
+}
+.ctxicon-AgilePlanBacklog:before {
+  content: "\e9e0";
+}
+.ctxicon-AgilePlanBoard:before {
+  content: "\e9e1";
+}
+.ctxicon-AgilePlanCapacity:before {
+  content: "\e9e2";
+}
+.ctxicon-AgilePlanGrooming:before {
+  content: "\e9e3";
+}
+.ctxicon-AgilePlanPlanning:before {
+  content: "\e9e4";
+}
+.ctxicon-AgilePlanRoadMap:before {
+  content: "\e9e5";
+}
+.ctxicon-AgileSetup:before {
+  content: "\e9e6";
+}
+.ctxicon-WaterfallManageDefectsAll:before {
+  content: "\e9e7";
+}
+.ctxicon-WaterfallManageDefectsPersonal:before {
+  content: "\e9e8";
+}
+.ctxicon-WaterfallManageElementMap:before {
+  content: "\e9e9";
+}
+.ctxicon-WaterfallPlanGanttChart:before {
+  content: "\1f3db";
+}
+.ctxicon-WaterfallPlanPlanning:before {
+  content: "\e9f2";
+}
+.ctxicon-WaterfallPlanRoadmap:before {
+  content: "\e9f3";
+}
+.ctxicon-WaterfallSetup:before {
+  content: "\e9f4";
+}
+.ctxicon-SupportIncident-All:before {
+  content: "\e9f5";
+}
+.ctxicon-SupportIncidentPersonal:before {
+  content: "\e9f6";
+}
+.ctxicon-Support-ITService-ServiceRequest-All:before {
+  content: "\e9f7";
+}
+.ctxicon-Support-ITService-ServiceRequest-Personal:before {
+  content: "\e9f8";
+}
+.ctxicon-Support-ITService-ServiceRequest-Setup:before {
+  content: "\e9f9";
+}
+.ctxicon-Support-ITService-Tickets-All:before {
+  content: "\e9fa";
+}
+.ctxicon-Support-ITService-Tickets-Personal:before {
+  content: "\e9fb";
+}
+.ctxicon-Support-ITService-Tickets-Setup:before {
+  content: "\e9fc";
+}
+.ctxicon-Assessmets:before {
+  content: "\e914";
+}
+.ctxicon-AssessmetsRadar:before {
+  content: "\e915";
+}
+.ctxicon-AssessmetsSetup:before {
+  content: "\e916";
+}
+.ctxicon-Calendar:before {
+  content: "\e917";
+}
+.ctxicon-CompanyDefinitionofDone:before {
+  content: "\e918";
+}
+.ctxicon-CompanyRetrospective:before {
+  content: "\e919";
+}
+.ctxicon-IdeaManagement:before {
+  content: "\e91a";
+}
+.ctxicon-PortfolioManageIssue:before {
+  content: "\e91b";
+}
+.ctxicon-PortfolioManageRisks:before {
+  content: "\e91c";
+}
+.ctxicon-PortfolioPlanAll:before {
+  content: "\e91d";
+}
+.ctxicon-PortfolioPlanBoar:before {
+  content: "\e91e";
+}
+.ctxicon-PortfolioPlanBoardSetup:before {
+  content: "\e91f";
+}
+.ctxicon-PortfolioPlanBudgetAssets:before {
+  content: "\e920";
+}
+.ctxicon-PortfolioPlanBudgetTeamMembers:before {
+  content: "\e921";
+}
+.ctxicon-PortfolioPlanDemand:before {
+  content: "\e9b5";
+}
+.ctxicon-PortfolioPlanDemandCapacity:before {
+  content: "\e9b6";
+}
+.ctxicon-PortfolioPlanPrioritization:before {
+  content: "\e9b7";
+}
+.ctxicon-PortfolioPlanRoadmap:before {
+  content: "\e9b8";
+}
+.ctxicon-PortfolioPlanStrategic:before {
+  content: "\e9b9";
+}
+.ctxicon-TimecardApproval:before {
+  content: "\e9ba";
+}
+.ctxicon-TimecardExpenses:before {
+  content: "\e9bb";
+}
+.ctxicon-TimecardSetup:before {
+  content: "\e9bc";
+}
+.ctxicon-TimecardTimeoff:before {
+  content: "\e9bd";
+}
+.ctxicon-TimecardTimesheet:before {
+  content: "\e9be";
+}
+.ctxicon-Track-ReleaseSetup:before {
+  content: "\e9bf";
+}
+.ctxicon-TrackCustomAnalyticsPersonal:before {
+  content: "\e9c0";
+}
+.ctxicon-TrackCustomReports:before {
+  content: "\e9c1";
+}
+.ctxicon-TrackITSMIncident:before {
+  content: "\e9c2";
+}
+.ctxicon-TrackITSMServiceRequest:before {
+  content: "\e9c3";
+}
+.ctxicon-TrackPPMBudget:before {
+  content: "\e9c4";
+}
+.ctxicon-TrackPPMportfolio:before {
+  content: "\e9c5";
+}
+.ctxicon-TrackPPMRisknIssues:before {
+  content: "\e9c6";
+}
+.ctxicon-TrackProjectAgile:before {
+  content: "\e9c7";
+}
+.ctxicon-TrackProjectWaterfall:before {
+  content: "\e9c8";
+}
+.ctxicon-TrackQuality:before {
+  content: "\e9c9";
+}
+.ctxicon-TrackReleaseBoard:before {
+  content: "\e9ca";
+}
+.ctxicon-TrackReleasePlanning:before {
+  content: "\e9cb";
+}
+.ctxicon-TrackReportScheduled:before {
+  content: "\e9cc";
+}
+.ctxicon-TrackReportsStandard:before {
+  content: "\e9cd";
+}
+.ctxicon-issue-escalated:before {
+  content: "\e980";
+}
+.ctxicon-issue-implementing:before {
+  content: "\e9a8";
+}
+.ctxicon-issue-investigating:before {
+  content: "\e9a9";
+}
+.ctxicon-issue-open:before {
+  content: "\e9aa";
+}
+.ctxicon-Resolved:before {
+  content: "\e9ab";
+}
+.ctxicon-risk-accpetance:before {
+  content: "\e9ac";
+}
+.ctxicon-risk-assessed:before {
+  content: "\e9ad";
+}
+.ctxicon-risk-closed:before {
+  content: "\e9ae";
+}
+.ctxicon-risk-eliminated:before {
+  content: "\e9af";
+}
+.ctxicon-risk-identity:before {
+  content: "\e9b0";
+}
+.ctxicon-risk-mitigate:before {
+  content: "\e9b1";
+}
+.ctxicon-risk-not-occured:before {
+  content: "\e9b2";
+}
+.ctxicon-risk-transferred:before {
+  content: "\e9b3";
+}
+.ctxicon-risk-triggered:before {
+  content: "\e9b4";
+}
+.ctxicon-setting1:before {
+  content: "\e97f";
+}
+.ctxicon-LDAP-Access:before {
+  content: "\e97d";
+}
+.ctxicon-setting:before {
+  content: "\e97e";
+}
+.ctxicon-AntivirusExclusion:before {
+  content: "\e969";
+}
+.ctxicon-AutotestCase:before {
+  content: "\e96a";
+}
+.ctxicon-buildRequest:before {
+  content: "\e96b";
+}
+.ctxicon-calimatic-request:before {
+  content: "\e96c";
+}
+.ctxicon-computer-Equipment:before {
+  content: "\e96d";
+}
+.ctxicon-cubeSetup:before {
+  content: "\e96e";
+}
+.ctxicon-database-access:before {
+  content: "\e96f";
+}
+.ctxicon-databaseMenifist-promotion:before {
+  content: "\e970";
+}
+.ctxicon-dataJack-config:before {
+  content: "\e971";
+}
+.ctxicon-dataModification-Information:before {
+  content: "\e972";
+}
+.ctxicon-deskPhone-features:before {
+  content: "\e973";
+}
+.ctxicon-DNS-request:before {
+  content: "\e974";
+}
+.ctxicon-driverEvent-report:before {
+  content: "\e975";
+}
+.ctxicon-extendedWireless:before {
+  content: "\e976";
+}
+.ctxicon-featureModification:before {
+  content: "\e977";
+}
+.ctxicon-firewallReq:before {
+  content: "\e978";
+}
+.ctxicon-Incident-report:before {
+  content: "\e979";
+}
+.ctxicon-IPaddress-Req:before {
+  content: "\e97a";
+}
+.ctxicon-job:before {
+  content: "\e97b";
+}
+.ctxicon-laptopEquipment:before {
+  content: "\e97c";
+}
+.ctxicon-LDAP-Request:before {
+  content: "\e981";
+}
+.ctxicon-leaveRequest:before {
+  content: "\e982";
+}
+.ctxicon-Linux-unixAccount:before {
+  content: "\e983";
+}
+.ctxicon-loanerEquipment:before {
+  content: "\e984";
+}
+.ctxicon-localAdmin-rights:before {
+  content: "\e985";
+}
+.ctxicon-lost-stolenEquipment:before {
+  content: "\e986";
+}
+.ctxicon-manualTest-case:before {
+  content: "\e987";
+}
+.ctxicon-Miscellaneous-Hardware:before {
+  content: "\e988";
+}
+.ctxicon-mobileDevice-request:before {
+  content: "\e989";
+}
+.ctxicon-name-change:before {
+  content: "\e98a";
+}
+.ctxicon-neawFeatures-request:before {
+  content: "\e98b";
+}
+.ctxicon-networkFolder:before {
+  content: "\e98c";
+}
+.ctxicon-non-managedSoftware:before {
+  content: "\e98d";
+}
+.ctxicon-non-personAccount:before {
+  content: "\e98e";
+}
+.ctxicon-non-standardServerbuild:before {
+  content: "\e98f";
+}
+.ctxicon-oracle-environment:before {
+  content: "\e990";
+}
+.ctxicon-other-request:before {
+  content: "\e991";
+}
+.ctxicon-outlookRequest:before {
+  content: "\e992";
+}
+.ctxicon-projectRquest:before {
+  content: "\e993";
+}
+.ctxicon-RequestFor-adminAccount:before {
+  content: "\e994";
+}
+.ctxicon-requestFor-variance:before {
+  content: "\e995";
+}
+.ctxicon-requestNew-server:before {
+  content: "\e996";
+}
+.ctxicon-restoreBackup:before {
+  content: "\e997";
+}
+.ctxicon-serverDecomm:before {
+  content: "\e998";
+}
+.ctxicon-softwareInstallation-Access:before {
+  content: "\e999";
+}
+.ctxicon-softwarePackaging:before {
+  content: "\e99a";
+}
+.ctxicon-softwarePurchase:before {
+  content: "\e99b";
+}
+.ctxicon-status-change:before {
+  content: "\e99c";
+}
+.ctxicon-tempraryEN-DISuser:before {
+  content: "\e99d";
+}
+.ctxicon-trainingData:before {
+  content: "\e99e";
+}
+.ctxicon-userChange:before {
+  content: "\e99f";
+}
+.ctxicon-userIncident-report:before {
+  content: "\e9a0";
+}
+.ctxicon-VDI:before {
+  content: "\e9a1";
+}
+.ctxicon-VPNaccessFor-personalComputer:before {
+  content: "\e9a2";
+}
+.ctxicon-webcontentSubmission:before {
+  content: "\e9a3";
+}
+.ctxicon-webex-access:before {
+  content: "\e9a4";
+}
+.ctxicon-websitesFilter:before {
+  content: "\e9a5";
+}
+.ctxicon-wepApp-vulnerabilitAssess:before {
+  content: "\e9a6";
+}
+.ctxicon-workSchedule:before {
+  content: "\e9a7";
+}
+.ctxicon-accomodationLeaves:before {
+  content: "\e94f";
+}
+.ctxicon-databaseService:before {
+  content: "\e951";
+}
+.ctxicon-development:before {
+  content: "\e952";
+}
+.ctxicon-hardwareRequest:before {
+  content: "\e953";
+}
+.ctxicon-hardware-softwareRequests:before {
+  content: "\e954";
+}
+.ctxicon-humanResource:before {
+  content: "\e955";
+}
+.ctxicon-ITservices:before {
+  content: "\e956";
+}
+.ctxicon-marketingTraining:before {
+  content: "\e957";
+}
+.ctxicon-middleWare:before {
+  content: "\e958";
+}
+.ctxicon-modifyUser:before {
+  content: "\e959";
+}
+.ctxicon-network:before {
+  content: "\e95a";
+}
+.ctxicon-newUser:before {
+  content: "\e95b";
+}
+.ctxicon-phoneRequest:before {
+  content: "\e95c";
+}
+.ctxicon-reportIssue:before {
+  content: "\e95d";
+}
+.ctxicon-requestAccess:before {
+  content: "\e95e";
+}
+.ctxicon-safety:before {
+  content: "\e95f";
+}
+.ctxicon-security:before {
+  content: "\e960";
+}
+.ctxicon-server:before {
+  content: "\e961";
+}
+.ctxicon-serviceCenter:before {
+  content: "\e962";
+}
+.ctxicon-softwareRequests:before {
+  content: "\e963";
+}
+.ctxicon-storage:before {
+  content: "\e964";
+}
+.ctxicon-trainingRoom:before {
+  content: "\e965";
+}
+.ctxicon-userIncident:before {
+  content: "\e966";
+}
+.ctxicon-user-termination:before {
+  content: "\e967";
+}
+.ctxicon-webContent:before {
+  content: "\e968";
+}
+.ctxicon-checklist:before {
+  content: "\e94d";
+}
+.ctxicon-links:before {
+  content: "\e94e";
+}
+.ctxicon-initiative:before {
+  content: "\e94c";
+}
+.ctxicon-discussion:before {
+  content: "\e949";
+}
+.ctxicon-priority:before {
+  content: "\e94a";
+}
+.ctxicon-progress:before {
+  content: "\e94b";
+}
+.ctxicon-qm-assignedTestCase:before {
+  content: "\e948";
+}
+.ctxicon-itsm-incedents:before {
+  content: "\e936";
+}
+.ctxicon-pm-backlog:before {
+  content: "\e937";
+}
+.ctxicon-pm-projects:before {
+  content: "\e938";
+}
+.ctxicon-pm-req-defect:before {
+  content: "\e939";
+}
+.ctxicon-ppm-active:before {
+  content: "\e93a";
+}
+.ctxicon-ppm-budget:before {
+  content: "\e93b";
+}
+.ctxicon-ppm-demand:before {
+  content: "\e93c";
+}
+.ctxicon-ppm-riskIssue:before {
+  content: "\e93d";
+}
+.ctxicon-qm-defects:before {
+  content: "\e93e";
+}
+.ctxicon-qm-testcases:before {
+  content: "\e93f";
+}
+.ctxicon-qm-test-results:before {
+  content: "\e940";
+}
+.ctxicon-release-releases:before {
+  content: "\e941";
+}
+.ctxicon-release-schedule:before {
+  content: "\e942";
+}
+.ctxicon-release-task:before {
+  content: "\e943";
+}
+.ctxicon-tcm-pendingSub:before {
+  content: "\e944";
+}
+.ctxicon-tcm-weeklyExpense:before {
+  content: "\e945";
+}
+.ctxicon-tcm-weeklyHour:before {
+  content: "\e946";
+}
+.ctxicon-tcm-weeklyTimeOff:before {
+  content: "\e947";
+}
+.ctxicon-star:before {
+  content: "\e934";
+}
+.ctxicon-plus:before {
+  content: "\e935";
+}
+.ctxicon-impediments:before {
+  content: "\e932";
+}
+.ctxicon-descp:before {
+  content: "\e933";
+}
+.ctxicon-loop:before {
+  content: "\e930";
+}
+.ctxicon-mail:before {
+  content: "\e931";
+}
+.ctxicon-unvote2:before {
+  content: "\e92e";
+}
+.ctxicon-vote:before {
+  content: "\e92f";
+}
+.ctxicon-states:before {
+  content: "\e92d";
+}
+.ctxicon-active-project:before {
+  content: "\e900";
+}
+.ctxicon-active-project1:before {
+  content: "\e901";
+}
+.ctxicon-activity:before {
+  content: "\e902";
+}
+.ctxicon-assigned:before {
+  content: "\e903";
+}
+.ctxicon-automation:before {
+  content: "\e904";
+}
+.ctxicon-burrnchart:before {
+  content: "\e905";
+}
+.ctxicon-chart-counter:before {
+  content: "\e906";
+}
+.ctxicon-defect:before {
+  content: "\e907";
+}
+.ctxicon-incident:before {
+  content: "\e908";
+}
+.ctxicon-issue:before {
+  content: "\e909";
+}
+.ctxicon-issue1:before {
+  content: "\e90a";
+}
+.ctxicon-monthly-timeoff:before {
+  content: "\e90b";
+}
+.ctxicon-portfolio:before {
+  content: "\e90c";
+}
+.ctxicon-portfolio-icon:before {
+  content: "\e90d";
+}
+.ctxicon-portfolio-icon2:before {
+  content: "\e90e";
+}
+.ctxicon-release-build:before {
+  content: "\e90f";
+}
+.ctxicon-release-checklist:before {
+  content: "\e910";
+}
+.ctxicon-release-detail:before {
+  content: "\e911";
+}
+.ctxicon-risk:before {
+  content: "\e912";
+}
+.ctxicon-risk2:before {
+  content: "\e922";
+}
+.ctxicon-risk3:before {
+  content: "\e923";
+}
+.ctxicon-test-case:before {
+  content: "\e924";
+}
+.ctxicon-test-result:before {
+  content: "\e925";
+}
+.ctxicon-test-suite:before {
+  content: "\e926";
+}
+.ctxicon-time-expense:before {
+  content: "\e927";
+}
+.ctxicon-time-monthly:before {
+  content: "\e928";
+}
+.ctxicon-time-weekly:before {
+  content: "\e929";
+}
+.ctxicon-weekly-expense:before {
+  content: "\e92a";
+}
+.ctxicon-weekly-timeoff:before {
+  content: "\e92b";
+}
+.ctxicon-work-item:before {
+  content: "\e92c";
+}
+
+.ctxicon-ct-excuse.unexcuseBar {
+    position: relative;
+}
+
+    .ctxicon-ct-excuse.unexcuseBar:after {
+        content: '';
+        width: 0px;
+        height: 12px;
+        border: 0.5px solid #a4a4a482;
+        background: #a4a4a482;
+        border-radius: 3px;
+        transform: rotate(45deg);
+        display: inline-block;
+        position: absolute;
+        right: 12px;
+        top: 3px;
+    }
+
+.stdGrid_dropdown .stdDD_Icon {
+    width: 26px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    margin-left: -7px;
+}

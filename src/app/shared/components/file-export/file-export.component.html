@@ -1,0 +1,45 @@
+@if(file()){ <p-accordion [activeIndex]="file()?.loading?1:0">
+  <p-accordionTab>
+    <ng-template pTemplate="header">
+      <div class="flex gap-2 justify-content-between align-items-center w-full">
+        <div class="flex gap-2 justify-content-start align-items-center">
+          @if(file()?.loading){
+            <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem; color: var(--success-green);" ></i>
+            <span class="font-bold white-space-nowrap">
+            Exporting File
+          </span>
+          }
+          @else {
+          <i class="fa-solid fa-check"
+            style="background-color: var(--success-green)"></i>
+          <span class="font-bold white-space-nowrap">
+            File is ready
+          </span>
+          }
+        </div>
+        @if(!file()?.loading){
+        <div class="align-self-center flex align-items-center mr-2 font-bold cursor-pointer" (click)="closeFileExporter()">
+          Close
+        </div> }
+        </div>
+
+
+    </ng-template>
+      <div class="flex flex-column w-full gap-4">
+        @for (file of exportFiles(); track $index) {
+        <div class="flex align-items-center gap-4">
+          <img [src]="file.imageUrl" alt="Excel Icon" width="45" height="45" />
+          <div class="flex flex-column gap-2">
+            <div class="font-semibold text-lg">{{file.name}}</div>
+            @if(file.loading){
+              <div>Just a moment, we are exporting the data right now</div>
+            }
+            @else {
+              <div>Done, file was downloaded successfully</div>
+            }
+          </div>
+        </div>
+      }
+      </div>
+  </p-accordionTab>
+</p-accordion>}

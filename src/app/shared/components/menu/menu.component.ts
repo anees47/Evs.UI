@@ -12,25 +12,29 @@ export class MenuComponent {
   showGrosseryDropdown = false;
 
   constructor(private router: Router) {}
-  
+
   onCellActionClick(){
 
   }
-  
+
   toggleUserDropdown() {
     this.showUserDropdown = !this.showUserDropdown;
     // Close other dropdowns
     this.showGrosseryDropdown = false;
   }
-  
+
   toggleGrosseryDropdown() {
     this.showGrosseryDropdown = !this.showGrosseryDropdown;
     // Close other dropdowns
     this.showUserDropdown = false;
   }
-  
+
   goToUser() {
     this.router.navigate(['/user/users']);
+    this.showUserDropdown = false;
+  }
+    goToUserUsersInfo() {
+    this.router.navigate(['/user/usersInfo']);
     this.showUserDropdown = false;
   }
 

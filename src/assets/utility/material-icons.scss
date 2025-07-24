@@ -1,0 +1,32 @@
+/* Google material icons */
+// these icons are used as a class name
+// declare a class name for icon and use the content code as a pseudo element for the icon
+
+[class^="mat_"],
+[class*=" mat_"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'Material Symbols Outlined' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    font-size: 20px;
+    line-height: 0.75;
+}
+
+.mat_filter_alt:before {
+    content: "\ef4f";
+}
+
+.mat_download:before {
+    content: "\f090";
+}
+.mat_view_module:before {
+    content: "\e8f0";
+}
+.mat_calendar_view_month:before {
+    content: "\efe7";
+}
+.mat_grid_on:before {
+    content: "\e3ec";
+}

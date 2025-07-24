@@ -1,0 +1,277 @@
+<div class="calimatic-grid">
+  @if (!isLoading) {
+    <p-table #dt columnResizeMode="expand" [reorderableColumns]="configs().enableColumnReorder"
+             [sortMode]="configs().sortMode||'single'" [styleClass]="selectedSize" [columns]="selectedColumns"
+             [virtualScroll]="true" [virtualScrollItemSize]="46" [dataKey]="configs().dataKey"
+             [value]="gridFilteredData"
+             (onFilter)="onFilter($event)"
+             [exportHeader]="'nameText'" [globalFilterFields]="globalFilterFields" [scrollable]="configs().fixedHeaders"
+             [scrollHeight]="configs().fixedHeadersHeight || '400px'" [rowHover]="configs().rowHover"
+              >
+      <ng-template pTemplate="caption">
+        <div class="flex align-items-end gap-3">
+          <!-- grid action left -->
+          <div class="grid-action-left flex-grow-1 flex flex-wrap align-items-center gap-3">
+            @if (configs().enableGlobalSearch) {
+              <div class="flex">
+                <p-iconfield>
+                  <p-inputicon class="fa-solid fa-magnifying-glass" />
+                  <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                         placeholder="Search" [pTooltip]="'Search from table'" tooltipPosition="bottom"
+                         [tooltipOptions]="{showDelay:200}"/>
+                </p-iconfield>
+              </div>
+            }
+
+          </div>
+          <!-- grid action right -->
+          <div class="grid-action-right flex flex-wrap align-items-center gap-2 justify-content-end">
+
+            @if (configs().enableExport) {
+              <!-- single selection dropdown -->
+              <p-dropdown [options]="configs().exportOptions" [pTooltip]="'Download file'" tooltipPosition="bottom"
+                         [tooltipOptions]="{showDelay:200}"
+                         (onChange)="onDataExport($event.value)" [showClear]="false" [dropdownIcon]="'mat_download'" styleClass="icon-button">
+              </p-dropdown>
+            }
+            @if (configs().enableTableViewSize) {
+              <!-- icon button group -->
+              <div class="flex justify-content-center">
+                <p-selectButton [(ngModel)]="selectedSize" [options]="tableViewSizes" optionLabel="name" optionValue="class"></p-selectButton>
+              </div>
+            }
+            @if (configs().enableColumnFilter) {
+              <!-- filter toggle button -->
+              <div class="filter-enable" [pTooltip]="toggleFilter?'Hide Filter':'Show Filter'" tooltipPosition="bottom"
+                   [tooltipOptions]="{showDelay:200}">
+                <p-checkbox [binary]="true" [(ngModel)]="toggleFilter"></p-checkbox>
+              </div>
+            }
+          </div>
+        </div>
+
+      </ng-template>
+      <ng-template let-columns pTemplate="header">
+        <tr>
+          @for (col of selectedColumns; track $index) {
+            @if (col.filterType == filterTypes.CHECK) {
+              <th>
+                <p-checkbox class="ml-2" [binary]="true" [(ngModel)]="configs().isCustomSelectionOn"
+                           (onChange)="selectAllItems($event)"></p-checkbox>
+              </th>
+            } @else {
+              @if (col.sortable) {
+                @if (configs().enableColumnResize && !configs().enableColumnReorder) {
+                  <th [style]="{ 'width':col.width+ 'px', 'min-width':col.width+ 'px', 'max-width':col.width+ 'px'}"
+                      pSortableColumn="{{col.name}}">
+                    {{ col.nameText }}
+                    <p-sortIcon field="{{col.name}}"></p-sortIcon>
+                    <span class="resize-handle" (click)="$event.stopPropagation()"
+                          (mousedown)="$event.stopPropagation()"></span>
+                  </th>
+                } @else if (configs().enableColumnReorder && !configs().enableColumnResize) {
+                  <th pReorderableColumn
+                      [style]="{ 'width':col.width+ 'px', 'min-width':col.width+ 'px', 'max-width':col.width+ 'px'}"
+                      pSortableColumn="{{col.name}}">
+                    {{ col.nameText }}
+                    <p-sortIcon field="{{col.name}}"></p-sortIcon>
+                  </th>
+                } @else if (configs().enableColumnReorder && configs().enableColumnResize) {
+                  <th pReorderableColumn
+                      [style]="{
+                                  'width':$index === (selectedColumns?.length||0) - 1 ? 'auto' :  col.width + 'px',
+                                  'min-width': $index === (selectedColumns?.length||0) - 1 ? 'auto' : col.width + 'px',
+                                  'max-width': $index === (selectedColumns?.length||0) - 1 ? 'none' : col.width + 'px'
+                                }"
+                      pSortableColumn="{{col.name}}">
+                    {{ col.nameText }}
+                    <p-sortIcon field="{{col.name}}"></p-sortIcon>
+                    @if ($index != (selectedColumns?.length||0) - 1) {
+                      <span class="resize-handle" (click)="$event.stopPropagation()"
+
+                            (mousedown)="$event.stopPropagation()"></span>
+                    }
+                  </th>
+                } @else {
+                  <th [style]="{ 'width':col.width+ 'px', 'min-width':col.width+ 'px', 'max-width':col.width+ 'px'}"
+                      pSortableColumn="{{col.name}}">
+                    {{ col.nameText }}
+                    <p-sortIcon field="{{col.name}}"></p-sortIcon>
+                  </th>
+                }
+              } @else {
+                @if (configs().enableColumnResize && !configs().enableColumnReorder) {
+                  <th [style]="{
+                                 'width':$index === (selectedColumns?.length||0) - 1 ? 'auto' :  col.width + 'px',
+                                 'min-width': $index === (selectedColumns?.length||0) - 1 ? 'auto' : col.width + 'px',
+                                 'max-width': $index === (selectedColumns?.length||0) - 1 ? 'none' : col.width + 'px'
+                               }">{{
+                      col.nameText
+                    }}
+                    @if ($index != (selectedColumns?.length||0) - 1) {
+                      <span class="resize-handle" (click)="$event.stopPropagation()"
+                            (mousedown)="$event.stopPropagation()"></span>
+                    }
+                  </th>
+                } @else if (configs().enableColumnReorder && !configs().enableColumnResize) {
+                  <th pReorderableColumn
+                      [style]="{ 'width':col.width+ 'px', 'min-width':col.width+ 'px', 'max-width':col.width+ 'px'}">{{
+                      col.nameText
+                    }}
+                  </th>
+                } @else if (configs().enableColumnResize && configs().enableColumnResize) {
+                  <th pReorderableColumn
+                      [style]="{
+                                'width':$index === (selectedColumns?.length||0) - 1 ? 'auto' :  col.width + 'px',
+                                'min-width': $index === (selectedColumns?.length||0) - 1 ? 'auto' : col.width + 'px',
+                                'max-width': $index === (selectedColumns?.length||0) - 1 ? 'none' : col.width + 'px'
+                              }">{{
+                      col.nameText
+                    }}
+                    @if ($index != (selectedColumns?.length||0) - 1) {
+                      <span class="resize-handle" (click)="$event.stopPropagation()" (mousedown)="$event.stopPropagation()"></span>
+                    }
+                  </th>
+                } @else {
+                  <th [style]="{ 'width':col.width+ 'px', 'min-width':col.width+ 'px', 'max-width':col.width+ 'px'}">
+                    {{ col.nameText }}
+                  </th>
+                }
+              }
+            }
+          }
+        </tr>
+        @if (toggleFilter) {
+          <tr>
+            @for (col of selectedColumns; track $index) {
+              @if (col.filter) {
+                <th>
+                  @switch (col.filterType) {
+                    @case (filterTypes.CUSTOM_HTML_FIELD) {
+                      <p-columnFilter [matchMode]="col.filterMatchMode ? col.filterMatchMode : 'contains'" type="text"
+                                      class="text-sm" placeholder="Search {{col.nameText}}"
+                                      [field]="col.name"></p-columnFilter>
+                    }
+                    @case (filterTypes.TEXT) {
+                      <p-columnFilter [matchMode]="col.filterMatchMode ? col.filterMatchMode : 'contains'" type="text"
+                                      class="text-sm"
+                                      placeholder="Type to search" [field]="col.name"></p-columnFilter>
+                    }
+                    @case (filterTypes.DROPDOWN) {
+                      <p-columnFilter #fr [field]="col.name"
+                                      [matchMode]="col.filterMatchMode ? col.filterMatchMode : 'contains'"
+                                      [showMenu]="col.showMenu">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                          <p-select appendTo="body" [options]="col.filterValues" [showClear]="true"
+
+                                      placeholder="Select a value">
+                          </p-select>
+                        </ng-template>
+                      </p-columnFilter>
+                    }
+                    @case (filterTypes.MULTI_DROPDOWN) {
+                      <p-columnFilter [field]="col.name" [matchMode]="col.filterMatchMode" [showMenu]="col.showMenu">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        </ng-template>
+                      </p-columnFilter>
+                    }
+                    @case (filterTypes.DATE) {
+                      <p-columnFilter [showMenu]="col.showMenu" [matchModeOptions]="dateMatchModeOptions"
+                                      [matchMode]="'date-is'"
+                                      placeholder="Select a date"
+                                      type="date" [field]="col.name"></p-columnFilter>
+                    }
+                  }
+
+                </th>
+              }
+            }
+          </tr>
+        }
+      </ng-template>
+      <ng-template let-item pTemplate="body" let-index="rowIndex">
+        <tr [pReorderableRow]="index">
+          @for (col of selectedColumns; track $index) {
+            @if (col.template) {
+              <td [style]="{ 'width': col.width + 'px', 'min-width': col.width + 'px', 'max-width': col.width + 'px'}">
+                <ng-container *ngTemplateOutlet="col.template; context: { $implicit: item, col:col }"></ng-container>
+              </td>
+            } @else {
+              @switch (col.filterType) {
+                @case (filterTypes.CHECK) {
+                  <td>
+                    <p-checkbox [binary]="true" [(ngModel)]="item.selected" (onChange)="checkBoxValueChange($event, item)"></p-checkbox>
+                  </td>
+                }
+                @case (filterTypes.COLCHECK) {
+                  <td>
+                    <p-checkbox [binary]="true" [(ngModel)]="item[col.name]" (onChange)="colCheckBoxValueChange($event, item, col.name, col.callBack)"></p-checkbox>
+                  </td>
+                }
+                @case (filterTypes.SWITCH) {
+                  <td>
+                    <p-toggleSwitch [ngModel]="item[col.name]"
+                                   (ngModelChange)="colCheckBoxValueChange($event, item, col.name, col.callBack)"/>
+                  </td>
+                }
+                @case (filterTypes.LINK) {
+                  <td>
+                    @if (item[col.name]) {
+                      <a target="_blank" class="info-links" [href]="item[col.name]">{{ col.nameText }}</a>
+                    }
+                  </td>
+                }
+                @case (filterTypes.CUSTOM_HTML_FIELD) {
+                  <td
+                    [style]="{ 'width': col.width + 'px', 'min-width': col.width + 'px', 'max-width': col.width + 'px'}">
+                    <span [innerHTML]="item[col.name]" [title]="item[col.name + 'Tooltip'] || ''"></span>
+                  </td>
+                }
+                @case (filterTypes.IMAGE) {
+                  <td
+                    [style]="{ 'width': col.width + 'px', 'min-width': col.width + 'px', 'max-width': col.width + 'px'}">
+                    <img [src]="item[col.name]" class="thumbnail" alt="">
+                  </td>
+                }
+                @default {
+                  <td [title]=" item[col.name] ?? ''"
+                      [style]="{ 'width': col.width + 'px', 'min-width': col.width + 'px', 'max-width': col.width + 'px'}">
+                  <span
+                    [class]="col.cssClasses || ''"
+                    >
+                    {{(item[col.name] ) }}
+                  </span>
+                  </td>
+                }
+              }
+            }
+          }
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+      </ng-template>
+      @if (configs().noDataText) {
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [colSpan]="selectedColumns?.length">{{ configs().noDataText }}</td>
+          </tr>
+        </ng-template>
+      } @else {
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [colSpan]="selectedColumns?.length">
+              <div class="flex flex-column justify-content-center align-items-center gap-2 p-10"><img
+                src="../../../../assets/images/No-Data-Image.svg" alt="" height="200rem">
+                <div class="font-bold text-lg">No Records Found</div>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      }
+    </p-table>
+  }
+</div>
+
+<p-popover #op [style]="{ width: '60rem' }">
+</p-popover>
+<file-export></file-export>

@@ -1,0 +1,1469 @@
+// card css
+// Toggle switch css
+// multiselect dropdown with no search field css
+// ellipsis css
+// Dropdown menu css
+// Calimatic Badge css
+// Calimatic Modal css
+// Calimatic Sidebar css
+// Input focus border style css
+// tooltip style css
+// checkbox style css
+// input floating label style css
+// calimatic Tabs css
+// calimatic breadcrumb style css
+// animation stylee css
+
+
+//-------------------------------------------------------------
+//---------- card css ----------
+//-------------------------------------------------------------
+.card {
+  padding: 1rem 1rem;
+  background: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(18, 113, 196, 0.2);
+  background-color: white;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  height: 100%;
+  position: relative;
+
+  &.no-height {
+    height: auto;
+  }
+
+  .card-header {
+    padding-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    h3 {
+      margin-bottom: 0;
+      flex: 1 0 auto;
+      word-break: break-word;
+      white-space: break-spaces;
+    }
+
+    .card-options {
+      min-width: 1px;
+      flex: 1 1 auto;
+      opacity: 1;
+      visibility: visible;
+      transition: all 0.3s ease;
+
+      .card-multiple-options {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
+
+        & > div {
+          min-width: 1px;
+          // flex: 1;
+        }
+      }
+    }
+  }
+
+  .card-body {
+    padding-top: 0.75rem;
+    flex: 1 1 auto;
+  }
+
+  .clm-info-card-img-wrapper{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 500px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    overflow: hidden;
+
+    &::before{
+      content: '';
+      z-index: 1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgb(241,245,249);
+      background: linear-gradient(90deg, rgb(241, 245, 249) 0%, rgb(241, 245, 249) 0%, rgba(255, 255, 255, 0) 60%);
+    }
+
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      // object-position: 0% 27%;
+    }
+  }
+}
+
+.card-lg {
+  padding: 1.75rem;
+}
+
+.card-info {
+  background-color: #ddf0ff;
+}
+
+//-------------------------------------------------------------
+//---------- Toggle switch css ----------
+//-------------------------------------------------------------
+.toggle-switch {
+
+  input {
+    display: none;
+  }
+
+  label {
+    display: inline-flex;
+  }
+
+  .slider {
+    position: relative;
+    width: 35px;
+    height: 22px;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #c7c7c7;
+    transition: .2s;
+    border-radius: 34px;
+    border: 1.5px solid #c7c7c7;
+  }
+
+  .slider:before {
+    content: "";
+    position: absolute;
+    height: 17px;
+    width: 17px;
+    left: 2px;
+    bottom: 0;
+    top: 0;
+    background-color: #ffffff;
+    transition: 0.2s;
+    border-radius: 50%;
+    font-family: 'projul-font';
+    font-size: 14px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+  }
+
+  input:checked + label .slider {
+    border-color: var(--primary-color);
+    background-color: var(--primary-color);
+  }
+
+  input:checked + label .slider:after {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+
+  input:checked + label .slider:before {
+    transform: translateX(12px);
+    background-color: #fcfcfc;
+    color: #3a3a3a;
+  }
+}
+
+.p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {
+  background: var(--primary-color);
+}
+
+//-------------------------------------------------------------
+//---------- ellipsis css ----------
+//-------------------------------------------------------------
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ellipsis-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+.ellipsis-two {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+.ellipsis-three {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+
+//-------------------------------------------------------------
+//----------- Dropdown menu css ------------------
+//-------------------------------------------------------------
+.p-menu {
+
+  .p-menu-list {
+    padding: 0;
+
+    .p-menu-item {
+
+      .p-menu-item-content {
+        border-radius: 0;
+
+        .p-menu-item-link {
+          padding: 1rem 1rem;
+          color: #334155;
+        }
+      }
+    }
+  }
+}
+
+.p-select-overlay .p-select-list, 
+.p-listbox .p-listbox-list, 
+.p-multiselect-items{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  padding-top: 0.5rem;
+
+  .p-select-option, .p-listbox-option, .p-multiselect-option{
+    border-radius: 0;
+
+    &:not(.p-listbox-option-selected):not(.p-disabled):hover{
+      color: var(--text-color);
+      background: #f1f5f9;
+    }
+
+    &.p-listbox-option-selected, &.p-select-option-selected{
+      color: var(--text-color);
+      background: #e2e8f0;
+    }
+  }
+}
+
+.float-label-dropdown {
+
+  .p-dropdown {
+
+    .p-dropdown-label {
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      font-size: 13px;
+      border-color: #80868b;
+    }
+  }
+}
+
+.p-dropdown {
+  border-color: #D0D5DD;
+  height: 33px;
+}
+
+.clm-dropdown-menu {
+  padding: 10px 0;
+  border: 0;
+  box-shadow: 0 1px 15px 0 rgba(0, 0, 0, .1), 0 0 0 0 transparent;
+  max-height: 230px;
+  overflow: auto;
+
+  .menu-item {
+    display: block;
+    padding: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-bottom: 0;
+    color: #222;
+    line-height: 20px;
+    min-width: 190px;
+    cursor: pointer;
+
+    &:hover {
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+  }
+}
+
+p-dynamicdialog + .p-overlay .p-dropdown-items-wrapper ul.p-dropdown-items {
+  max-width: 100%;
+}
+
+.searchable-custom-dropdown{
+  max-width: 300px;
+  width: 100%;
+  min-width: 300px;
+
+  .p-select-header, .p-multiselect-header{
+    border-bottom: 1px solid gainsboro;
+    padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+    input{
+      border: 0;
+      box-shadow: none;
+    }
+  }
+  .p-select-list-container, .p-multiselect-items-wrapper{
+    max-height: 220px !important;
+    min-height: 180px;
+
+    p-selectitem, p-multiselect-item{
+      li{
+
+        &:hover{
+          .dropdown-list-item .dropdown-list-action{
+            opacity: 1;
+            visibility: visible;
+            z-index: 99999;
+          }
+        }
+
+        .dropdown-list-item{
+          display: flex;
+          align-items: center;
+          position: relative;
+          width: 100%;
+
+          & > span:first-child{
+            flex: 1 1 auto;
+          }
+
+          .dropdown-list-action{
+            display: flex;
+            position: absolute;
+            right: 0;
+            opacity: 0;
+            visibility: hidden;
+          }
+        }
+      }
+    }
+  }
+  .p-select-empty-message, .p-multiselect-empty-message{
+    padding: 0;
+    height: 173px;
+
+    & > div.no-data-section{
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      & > div:first-child{
+        flex: 1 0 auto;
+        text-align: center;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        max-width: 250px;
+        margin: 0 auto;
+      }
+      button{
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+        padding: 0.75rem 0.75rem !important;
+        height: auto !important;
+      }
+    }
+  }
+}
+
+//-------------------------------------------------------------
+//----------- Dropdown Multi-select menu css ------------------
+//-------------------------------------------------------------
+.p-multiselect {
+  border-color: #D0D5DD;
+  height: 33px;
+}
+
+.p-multiselect-option.p-multiselect-option-selected{
+  color:var(--text-color);
+  background: transparent;
+}
+
+p-multiselect-item li:not(.p-highlight):not(.p-disabled):hover {
+  color: #030229;
+  background: #f1f5f9;
+}
+
+.p-dropdown-panel .p-dropdown-items,
+.p-multiselect-panel {
+
+  // max-width: 238px;
+
+  .p-dropdown-item, .p-multiselect-item {
+    white-space: break-spaces;
+    word-break: break-word;
+  }
+}
+
+.p-multiselect-items-wrapper {
+  min-height: 130px;
+}
+
+.not-searchable {
+
+  .p-multiselect-header {
+    display: none;
+  }
+}
+
+.p-multiselect.p-multiselect-chip .p-multiselect-token {
+  border: 1px solid var(--primary-color);
+  border-radius: 40px;
+  font-size: 13px;
+  background-color: var(--primary-color);
+  color: #ffffff;
+  padding: 3px 4px 3px 9px;
+}
+
+.multiselect-add-item-btn {
+  align-items: center;
+  text-align: left;
+  gap: 0.5rem;
+
+  .add-btn-info {
+    flex: 1 1 auto;
+    min-width: 1px;
+    line-height: 16px;
+
+    small {
+      font-size: 12px;
+    }
+  }
+}
+
+//-------------------------------------------------------------
+//----------- Calimatic Badge css ------------------
+//-------------------------------------------------------------
+.clm-badge {
+  background-color: transparent;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 6px;
+  color: #ffffff;
+
+  &.clm-badge-blue {
+    background-color: var(--primary-color);
+  }
+
+  &.clm-badge-primary-outline {
+    background-color: #ffffff;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    &:hover{
+      background-color: #e8e8e8;
+    }
+  }
+
+  &.label-blue-1 {
+    background-color: var(--deepOceanBlue);
+  }
+  &.label-success {
+    background-color: #36c6d3;
+  }
+  &.label-danger {
+    background-color: #ed6b75;
+}
+ &.label-draft {
+    background-color: #b9b8b8;
+} &.clm-badge-green {
+    background-color: #31a431;
+  }
+  &.clm-badge-dark-blue {
+    background-color: #4f68bd;
+  }&.clm-badge-draft {
+    background-color: #34495E;
+  }&.clm-badge-approved {
+    background-color: #54A0FF;
+  }
+
+
+
+  &.clm-badge-orange {
+    background-color: #e77518;
+  }
+}
+
+.p-overlay-badge .p-badge{
+  font-size: 12px;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  line-height: 1.45;
+  border-radius: 10px;
+  padding: 0 4px;
+  z-index: 9;
+  background-color: var(--error-color);
+}
+
+//-------------------------------------------------------------
+//----------- Calimatic Modal css ------------------
+//-------------------------------------------------------------
+.p-dialog .p-dialog-header .p-dialog-title{
+  font-size: 19px;
+  line-height: 20.9px;
+  font-weight: bold;
+}
+
+.clm-modal-dialog {
+
+  .p-dialog-content {
+    padding: 0;
+    border-radius: 12px;
+  }
+
+  .modal-header {
+    padding: 16px 16px 12px 16px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 1px 4px -1px gainsboro;
+    min-height: 62px;
+    position: relative;
+    z-index: 3;
+
+    h4 {
+      margin: 0;
+      flex: 1 1 auto;
+
+      i {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+
+  &.no-footer {
+
+    .modal-body {
+      max-height: calc(100vh - 170px);
+    }
+  }
+
+  .modal-body {
+    padding: 24px;
+    max-height: calc(100vh - 220px);
+    overflow: auto;
+  }
+
+  .modal-footer {
+    padding: 12px 16px 16px 16px;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+}
+
+.clm-sm-modal {
+  max-width: 540px;
+  width: 100%;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+.clm-xs-modal {
+  max-width: 500px;
+  width: 100%;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+.clm-md-modal {
+  max-width: 768px;
+  width: 100%;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.clm-lg-modal {
+  max-width: 992px;
+  width: 100%;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.clm-xl-modal {
+  max-width: 1100px;
+  width: 100%;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.clm-xxl-modal {
+  max-width: 1655px;
+  width: 100%;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+.clm-full-w-modal {
+  max-width: 96%;
+  height: 95%;
+  width: 100%;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+
+  &.no-footer{
+
+    .modal-body{
+      max-height: calc(100vh - 137px);
+    }
+  }
+}
+
+.clm-full-screen-modal {
+  max-width: 100%;
+  height: 100%;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  max-height: 100%;
+  border-radius: 0;
+
+  .modal-body{
+    max-height: calc(100vh - 131px);
+  }
+
+  &.no-footer{
+
+    .modal-body{
+      max-height: calc(100vh - 64px);
+    }
+  }
+}
+
+.clm-xl-modal,.clm-xxl-modal .clm-lg-modal, .clm-md-modal, .clm-sm-modal,.clm-xs-modal, .clm-full-w-modal, .clm-full-screen-modal {
+
+  .p-dialog-header {
+    border-bottom: 1px solid #e8e8e8;
+  }
+}
+
+
+.clm-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 0 0 0;
+}
+
+.clm-custom-fullscreen-modal{
+
+  z-index: 1102;
+  max-height: 100%;
+  display: block;
+  width: 100%;
+  border-radius: 0;
+
+  & > .p-dialog-content{
+    overflow: auto;
+    border-radius: 0;
+    padding: 0;
+  }
+}
+.clm-custom-fullscreen-modal-courses-order {
+
+  z-index: 1102;
+  max-height: 100%;
+  width: 100%;
+  border-radius: 0;
+
+  & > .p-dialog-content{
+    overflow: auto;
+    border-radius: 0;
+    padding: 0;
+  }
+}
+//-------------------------------------------------------------
+//----------- Calimatic Sidebar css ------------------
+//-------------------------------------------------------------
+.p-sidebar-full-width {
+  max-width: 100%;
+  width: 100%;
+}
+
+//-------------------------------------------------------------
+//----------- Input focus border style css ------------------
+//-------------------------------------------------------------
+.input-border-effect-1 + .focus-border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background-color: #3399FF;
+  transition: 0.25s;
+}
+
+.input-border-effect-1:focus + .focus-border {
+  width: 100%;
+  transition: 0.25s;
+}
+
+.p-inputtext:enabled:focus {
+  outline: none;
+}
+
+.p-inputtext {
+  border-color: #D0D5DD;
+}
+
+//-------------------------------------------------------------
+//----------- tooltip style css ------------------
+//-------------------------------------------------------------
+.p-tooltip {
+  max-width: 80vh;
+
+  .p-tooltip-arrow {
+    display: none;
+  }
+
+  .p-tooltip-text {
+    background: #2d2d2d;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: 0.25px;
+  }
+}
+
+//-------------------------------------------------------------
+//----------- checkbox style css ------------------
+//-------------------------------------------------------------
+.p-checkbox .p-checkbox-box {
+  outline: none;
+}
+
+.successCheckbox {
+
+  .p-checkbox-box {
+    border-color: var(--success-green) !important;
+
+    &.p-highlight {
+      background-color: var(--success-green) !important;
+      border-color: var(--success-green) !important;
+
+      svg {
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+.p-checkbox .p-checkbox-box {
+  border-color: var(--primary-color);
+
+  &.p-highlight {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+  }
+}
+
+//-------------------------------------------------------------
+//----------- input floating label style css ------------------
+//-------------------------------------------------------------
+// PrimeNG v19 updated styles - targeting new .p-floatlabel class
+.p-floatlabel {
+
+  & > .ng-invalid.ng-dirty + label {
+    color: var(--error-color);
+  }
+
+  label {
+    transform: translateY(21px);
+    background: #ffffff;
+    padding: 0 5px;
+    font-size: 13px;
+    top: unset;
+    margin-top: -0.5rem;
+  }
+
+  input {
+    border-radius: var(--border-radius);
+    padding: 0.85rem 1rem;
+    font-size: 13px;
+    border-color: #D0D5DD;
+    height: 41px;
+
+    &:disabled + label {
+      background-color: #e2e8f0;
+    }
+
+    ::placeholder{
+      display: block;
+    }
+  }
+
+  input:focus {
+    border-width: 1px;
+    box-shadow: 0px 0px 0px 1px var(--primary-color) inset !important;
+  }
+
+  // input:focus, input.p-filled{
+
+  //   & + label{
+  //     transform: translateY(0);
+  //     color: var(--primary-color);
+  //   }
+  // }
+
+  .supporting-label {
+    font-size: 13px;
+    display: inline-block;
+    padding-top: 0.5rem;
+  }
+}
+
+.p-floatlabel input:focus ~ label,
+.p-floatlabel input.p-filled ~ label,
+.p-floatlabel textarea:focus ~ label,
+.p-floatlabel textarea.p-filled ~ label,
+.p-floatlabel .p-inputwrapper-focus ~ label,
+.p-floatlabel .p-inputwrapper-filled ~ label,
+.p-floatlabel p-datepicker:has(.p-inputwrapper-focus) ~ label,
+.p-floatlabel p-datepicker:has(.p-inputwrapper-filled) ~ label,
+.p-floatlabel p-password:has(.p-inputwrapper-filled, .p-inputwrapper-focus) ~ label{
+  transform: translateY(0);
+  color: var(--primary-color);
+}
+
+.p-inputgroup {
+
+  &:has(.p-inputgroup-addon + p-floatlabel + .p-inputgroup-addon) {
+    .p-inputgroup .p-floatlabel input {
+      border-radius: 0;
+    }
+
+    .p-inputgroup-addon + p-floatlabel + .p-inputgroup-addon {
+      border-left: 0;
+    }
+  }
+
+  .p-inputgroup-addon {
+    border-color: #D0D5DD;
+  }
+
+
+  .p-floatlabel input {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.p-floatlabel{
+  .p-dropdown{
+    height: 41px;
+    border-radius: 8px;
+
+    .p-dropdown-label{
+      padding: 0.85rem 1rem;
+      font-size: 13px;
+    }
+  }
+}
+
+.p-floatlabel{
+  p-multiselect{
+    height: 41px;
+    border-radius: 8px;
+
+    .p-multiselect-label{
+      padding: 0.65rem 1rem;
+      font-size: 13px;
+    }
+  }
+}
+
+//-------------------------------------------------------------
+//----------- Tabs css ------------------
+//-------------------------------------------------------------
+.p-tablist-active-bar{
+  display: none;
+}
+.tiny-tab .p-tabs .p-tab{
+  font-size: var(--text-size);
+  padding: 1rem 1rem !important;
+  border-radius: 0;
+}
+
+.p-tabs {
+
+  .p-tabview-panels {
+    padding: 15px;
+  }
+
+  // .p-tabview-nav-content {
+  //   border-bottom: 1px solid gainsboro;
+  // }
+
+  // .p-tabview-nav {
+  //   border-bottom: 0;
+
+  //   li {
+  //     cursor: pointer;
+
+  //     // &.p-highlight {
+  //     //   a {
+  //     //     color: var(--primary-color);
+  //     //     font-weight: 600;
+
+  //     //     &:before {
+  //     //       content: "";
+  //     //       position: absolute;
+  //     //       left: 0;
+  //     //       right: 0;
+  //     //       bottom: 0;
+  //     //       height: 3px;
+  //     //       background: var(--primary-color);
+  //     //       width: 80%;
+  //     //       margin: 0 auto;
+  //     //       max-width: 100%;
+  //     //       color: var(--primary-color);
+  //     //       border-top-left-radius: 7px;
+  //     //       border-top-right-radius: 7px;
+  //     //     }
+  //     //   }
+  //     // }
+  //   }
+
+  //   .p-tabview-ink-bar {
+  //     background-color: transparent !important;
+  //   }
+  // }
+
+  .p-tablist-content{
+    border-bottom: 1px solid gainsboro;
+
+    .p-tablist-tab-list{
+      border: 0;
+      
+      .p-tab {
+        white-space: nowrap;
+        color: #919191;
+        position: relative;
+        transition: all 0.15s ease;
+        font-weight: 500;
+        font-size: 14px;
+        padding: 1.25rem 1.75rem;
+        border: 0;
+        line-height: 1;
+    
+        &.p-tab-active {
+            color: var(--primary-color);
+            font-weight: 600;
+        
+            &:before {
+              content: "";
+              position: absolute;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              height: 3px;
+              background: var(--primary-color);
+              width: 80%;
+              margin: 0 auto;
+              max-width: 100%;
+              color: var(--primary-color);
+              border-top-left-radius: 7px;
+              border-top-right-radius: 7px;
+            }
+          }
+    
+        &:hover {
+          background: #f1f1f1;
+        }
+      }
+    }
+  }
+
+}
+
+//-------------------------------------------------------------
+//----------- chips style css ------------------
+//-------------------------------------------------------------
+.p-chips .p-chips-multiple-container {
+  border-color: #80868b;
+}
+
+.p-chips-w-full, .p-chips-w-full ul {
+  width: 100%;
+}
+
+.p-chips .p-chips-multiple-container .p-chips-token {
+  border: 1px solid var(--primary-color);
+  border-radius: 40px;
+  font-size: 13px;
+  background-color: var(--primary-color);
+  color: #ffffff;
+  padding: 3px 4px 3px 9px;
+}
+
+//-------------------------------------------------------------
+//----------- Badge style css ------------------
+//-------------------------------------------------------------
+.p-badge.p-badge-success {
+  background-color: #0080001f;
+  color: green;
+}
+
+//-------------------------------------------------------------
+//----------- Calimatic V2 loading style css ------------------
+//-------------------------------------------------------------
+
+#Ajaxprogress {
+  background: #ffffff7a;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+//-------------------------------------------------------------
+//----------- color picker style css ------------------
+//-------------------------------------------------------------
+.clm-color-picker{
+  position: unset;
+  width: auto;
+  border: 0;
+
+  input{
+    background: transparent;
+    width: 26px;
+    border: 1px solid grey;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 26px;
+  }
+}
+color-picker{
+
+  .arrow{
+    display: none;
+  }
+}
+
+//-------------------------------------------------------------
+//----------- calimatic breadcrumb style css ------------------
+//-------------------------------------------------------------
+
+.p-breadcrumb .p-breadcrumb-list{
+  font-size: 13px;
+  font-weight: 500;
+}
+
+//-------------------------------------------------------------
+//----------- Input phone number with flag style css ------------------
+//-------------------------------------------------------------
+.w-full .iti--inline-dropdown, .w-full .iti--allow-dropdown{
+  width: 100%;
+}
+.iti--inline-dropdown{
+
+  .iti__tel-input + .form-invalid{
+    position: absolute;
+    bottom: -20px;
+  }
+}
+
+//-------------------------------------------------------------
+//----------- general dropdown style css ------------------
+//-------------------------------------------------------------
+.general-dropdown{
+  padding: 1rem 0;
+  max-height: 350px;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  .dd-info-label{
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--gray-color-2);
+  }
+
+  ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li{
+      a{
+        padding: 0.5rem 1rem;
+        color: var(--text-color);
+        cursor: pointer;
+        display: block;
+        width: 100%;
+
+        &:hover{
+          background: #f1f5f9;
+        }
+      }
+    }
+  }
+}
+
+//-------------------------------------------------------------
+//----------- Multiselect with tabs dropdown style css ---------
+//-------------------------------------------------------------
+
+.multiselect-tab-group{
+  width: 280px;
+  min-height: 290px;
+  padding-top: 0;
+
+  .p-tabpanels{
+      padding: 0;
+  }
+
+  .p-listbox{
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+
+      .p-listbox-list{
+
+        .p-listbox-item-group{
+          display: none;
+        }
+
+        .p-listbox-option{
+          position: relative;
+          color: #3a3a3a;
+
+          span{
+            margin-left: 2rem;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          &::before{
+            content: '';
+            border: 1px solid var(--primary-color);
+            background: #ffffff;
+            width: 1.25rem;
+            height: 1.25rem;
+            color: #3a3a3a;
+            border-radius: 6px;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, outline-color 0.2s;
+            margin-right: 0.5rem;
+            position: absolute;
+          }
+
+          &.p-listbox-option-selected{
+            &::before{
+              content: '';
+              border: 1px solid var(--primary-color);
+              background: var(--primary-color);
+              width: 1.25rem;
+              height: 1.25rem;
+              color: #3a3a3a;
+              border-radius: 6px;
+              transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, outline-color 0.2s;
+              margin-right: 0.5rem;
+              position: absolute;
+            }
+            &:after{
+              content: "\f00c";
+              font-family: "Font Awesome 6 Free";
+              font-weight: 600;
+              color: #ffffff;
+              position: absolute;
+              left: 15px;
+              top: 10px;
+              font-size: 11px;
+            }
+          }
+        }
+      }
+  }
+}
+
+//-------------------------------------------------------------
+//----------- Toaster style css ---------
+//-------------------------------------------------------------
+
+.p-toast {
+  background-repeat: no-repeat;
+  opacity: 1;
+
+  .p-toast-message {
+    // padding: 0 30px;
+    position: relative;
+
+    &.p-toast-message-error {
+      background: #bd362f;
+      box-shadow: 0 0 12px #999;
+      border: 1px solid transparent;
+      border-radius: 3px 3px 3px 3px;
+      color: #fff;
+// icon Right corner
+      .p-toast-icon-close {
+        opacity: 1;
+        &:hover {
+          background: transparent;
+
+        }
+        .p-icon {
+          width: 10px;
+          height: 10px;
+          color: white;
+        }
+      }
+// icon left corner
+      .p-toast-message-icon {
+        .p-icon:not(.p-toast-icon-close-icon) {
+          // width: 1.125rem;
+          // height: 1.125rem;
+          display: none;
+      }
+        color: #fff;
+      ::before{
+        content: '\f071';
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+      }
+
+        &:hover {
+          background: transparent;
+        }
+      }
+      .p-toast-message-content {
+        padding: 6px 10px;
+        border-width: 1px;
+
+        .p-toast-summary {
+          font-weight: 500;
+          color: #ffffff;
+        }
+
+      }
+      .p-toast-detail {
+        color: #fff;
+        margin: 0;
+      }
+    }
+    &.p-toast-message-warn {
+      background: #fcf7ba;
+      box-shadow: 0 0 12px #999;
+      border: 1px solid transparent;
+      border-radius: 3px 3px 3px 3px;
+      border-width: 1px;
+
+      .p-toast-message-content {
+        border-width: 1px;
+
+        .p-toast-summary {
+          font-weight: 500;
+          color: #ca8a04;
+        }
+
+      }
+
+      .p-toast-detail {
+        color: #000;
+        margin: 0;
+      }
+    }
+    &.p-toast-message-success {
+      background: #51a351;
+      border: solid #bbf7d0;
+      border-width: 1px;
+      // color: #16a34a;
+      color: #fff;
+      .p-toast-message-content {
+        border-width: 1px;
+
+        .p-toast-summary {
+          font-weight: 500;
+          color: #fff;
+        }
+
+      }
+
+      .p-toast-detail {
+        color: #fff;
+        margin: 0;
+      }
+    .p-toast-icon-close {
+      color: #fff;
+      &:hover {
+        background: transparent;
+
+      }
+    }
+    .p-icon:not(.p-toast-icon-close-icon) {
+      color: #fff;
+      &:hover {
+        background: transparent;
+
+      }
+  }
+  }
+  }
+}
+
+//-------------------------------------------------------------
+//----------- No data style css -------------------------
+//-------------------------------------------------------------
+
+.no-data-placeholder{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 1rem 1rem 1rem;
+  color: #cecece;
+
+  i{
+    font-size: 40px;
+    margin-bottom: 1.5rem;
+    color: gainsboro;
+  }
+  h3{
+    color: inherit;
+  }
+}
+
+//-------------------------------------------------------------
+//----------- Calimatic chips css ------------------
+//-------------------------------------------------------------
+
+.clm-chips{
+  padding: 0.35rem 0.75rem;
+  background: #f0f1ef;
+  border-radius: 40px;
+  font-size: 13px;
+  color: #646462;
+  border: 1px solid #cecece;
+  display: inline-flex;
+  margin: 4px;
+  align-items: center;
+  line-height: 1.25;
+
+  & > i{
+    margin-right: 0.5rem;
+  }
+}
+
+//-------------------------------------------------------------
+//----------- Calimatic Status label with dot css ------------------
+//-------------------------------------------------------------
+.clm-status{
+  padding-left: 1.2rem;
+  position: relative;
+  display: flex;
+  letter-spacing: 0.5px;
+
+  &::before{
+    content: '\f111';
+    position: absolute;
+    left: 0;
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 8px;
+    top: 4px;
+    color: var(--primary-color);
+  }
+
+  &.clm-status-success::before{
+    color: var(--success-color);
+  }
+  &.clm-status-draft::before{
+    color: var(--primary-color);
+  }
+  &.clm-status-pending::before{
+    color: var(--warn-color);
+  }
+    &.clm-status-failed::before{
+    color: var(--failed-status);
+  }
+}
+
+//-------------------------------------------------------------
+//----------- Calimatic Rating star css ------------------
+//-------------------------------------------------------------
+
+.p-rating .p-rating-item .p-rating-icon{
+  color: #b2b2b2;
+}
+.p-rating:not(.p-disabled):not(.p-readonly) .p-rating-item:hover .p-rating-icon,
+.p-rating .p-rating-item.p-rating-item-active .p-rating-icon{
+  color: #ffdf29;
+}
+
+//-------------------------------------------------------------
+//----------- Calimatic User PhotoS css ------------------
+//-------------------------------------------------------------
+
+.clm-photo{
+  font-style: normal;
+  font-weight: bold;
+  width: 35px;
+  height: 35px;
+  display: inline-flex;
+  background: #d7e7fe;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  margin-right: 0.5rem;
+  flex: 0 0 35px;
+}
+
+
+
+
+
+.green {
+  background-color: var(--primary-color);
+}
+
+.label-red {
+   background-color: rgba(230, 16, 16, 0.562);
+}
+
+
+//-------------------------------------------------------------
+//----------- Calimatic animation style css ------------------
+//-------------------------------------------------------------
+
+.p-overlay-mask-enter-animation {
+  animation: p-overlay-mask-enter-animation 150ms forwards;
+}
+
+@keyframes p-overlay-mask-enter-animation {
+  from {
+    background-color: transparent;
+  }
+  to {
+    background-color: var(--p-overlay-mask-background);
+  }
+}
+
+.p-overlay-mask-leave-animation {
+  animation: p-overlay-mask-leave-animation 150ms forwards;
+}
+
+@keyframes p-overlay-mask-leave-animation {
+  from {
+    background-color: var(--p-overlay-mask-background);
+  }
+  to {
+    background-color: transparent;
+  }
+}

@@ -27,7 +27,11 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss",
+              "src/assets/utility/evs-style.scss",
+              "src/responsive.scss",
+              "src/assets/utility/evs-font.scss",
+              "src/assets/utility/material-icons.scss"
             ],
             "scripts": []
           },
@@ -88,12 +92,20 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/assets/utility/evs-style.scss",
+              "src/responsive.scss",
+              "src/assets/utility/evs-font.scss",
+              "src/assets/utility/material-icons.scss",
+
+               "src/styles.scss"
             ],
             "scripts": []
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
