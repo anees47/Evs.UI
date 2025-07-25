@@ -15,7 +15,7 @@ export class UserService {
   // Get all users
   async getNewUserInfos(filter: SearchNewUserInfosRequestDto): Promise<NewUserInfo[]> {
     const response = await lastValueFrom(this.apiService.Post(ENDPOINTS_CONSTANTS.newUserInfo.getAll, filter));
-    return response.payload || [];
+    return (response.payload || [])as NewUserInfo[];
   }
 
   // Get user by ID

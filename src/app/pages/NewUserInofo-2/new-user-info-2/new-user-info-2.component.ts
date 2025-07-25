@@ -15,13 +15,15 @@ import { ITableAction } from '../../../shared/interfaces/TableInterfaces';
 import { AddUpdateUserComponent } from "../../NewUserInfo/components/NewUserInfo/saveUser/add-update-user.component";
 import { CommonModule } from '@angular/common';
 import { TableSkeletonComponent } from "../../../shared/components/table-skeleton/table-skeleton/table-skeleton.component";
+import { Tag } from 'primeng/tag';
+import { Button } from "primeng/button";
 
 
 @Component({
     templateUrl: './new-user-info-2.component.html',
     styleUrl: './new-user-info-2.component.css',
     standalone: true,
-    imports: [TableModule, Tooltip, IconField, InputIcon, SelectButton, FormsModule, AddUpdateUserComponent, CommonModule, TableSkeletonComponent],
+    imports: [Tag, TableModule, Tooltip, IconField, InputIcon, SelectButton, FormsModule, AddUpdateUserComponent, CommonModule, TableSkeletonComponent,Button],
 })
 
 export class NewUserInfo2Component implements OnInit {
@@ -55,60 +57,80 @@ export class NewUserInfo2Component implements OnInit {
   //@Output() onExport = new EventEmitter<any>();
 
   // Column definitions updated for NewUserInfo
-    userColumns = [
-      {
-        width: "50px",
-        name: "id",
-        nameText: "id",
-        sortable: true,
-        order: 1,
-        field: "id",
-        filter: true,
-        filterType: TableColumnFilterEnum.TEXT,
-        showMenu: true,
-        filterValues: [{}],
-        isVisible: true,
-      },
-      {
-        width: "50px",
-        name: "title",
-        nameText: "title",
-        sortable: true,
-        order: 1,
-        field: "title",
-        filter: true,
-        filterType: TableColumnFilterEnum.TEXT,
-        showMenu: true,
-        filterValues: [{}],
-        isVisible: true,
-      },
-      {
-        width: "50px",
-        name: "description",
-        nameText: "description",
-        sortable: true,
-        order: 1,
-        field: "description",
-        filter: true,
-        filterType: TableColumnFilterEnum.TEXT,
-        showMenu: true,
-        filterValues: [{}],
-        isVisible: true,
-      },
-      {
-        width: "50px",
-        name: "actions",
-        nameText: "actions",
-        sortable: true,
-        order: 1,
-        field: "actions",
-        filter: true,
-        filterType: TableColumnFilterEnum.TEXT,
-        showMenu: true,
-        filterValues: [{}],
-        isVisible: true,
-      }
-    ] as unknown as TableColumnInterface[]
+    userColumns: TableColumnInterface[] = [
+    {
+      name: 'id',
+      nameText: 'ID',
+      field: 'id',
+      filter: true,
+      filterType: TableColumnFilterEnum.TEXT,
+      sortable: true,
+      width: 50,
+      isVisible: true,
+      showMenu: false
+    },
+    {
+      name: 'title',
+      nameText: 'Title',
+      field: 'title',
+      filter: true,
+      filterType: TableColumnFilterEnum.TEXT,
+      sortable: true,
+      width: 140,
+      isVisible: true,
+      showMenu: false
+    },
+    {
+      name: 'description',
+      nameText: 'Description',
+      field: 'description',
+      filter: true,
+      filterType: TableColumnFilterEnum.TEXT,
+      sortable: true,
+      width: 180,
+      isVisible: true,
+      showMenu: false,
+      //template: this.desctipionTemplate()
+    },
+    {
+      name: 'category',
+      nameText: 'Category Name',
+      field: 'category',
+      filter: true,
+      filterType: TableColumnFilterEnum.TEXT,
+      sortable: true,
+      width: 100,
+      isVisible: true,
+      showMenu: false
+    },
+    {
+      name: 'isActive',
+      nameText: 'Status',
+      field: 'isActive',
+      filter: true,
+      filterType: TableColumnFilterEnum.DROPDOWN,
+      filterValues: [
+        { label: 'Active', value: true },
+        { label: 'Inactive', value: false }
+      ],
+      sortable: true,
+      width: 80,
+      isVisible: true,
+      showMenu: false,
+      cssClasses: 'status-badge'
+    },
+    {
+      name: 'actions',
+      nameText: 'Actions',
+      field: 'actions',
+      filter: false,
+      filterType: TableColumnFilterEnum.NONE,
+      sortable: true,
+      width: 100,
+      isVisible: true,
+      showMenu: false
+    }
+  ];
 
     ngOnInit() {
           this.gridColumns.set(this.userColumns);
@@ -121,6 +143,7 @@ export class NewUserInfo2Component implements OnInit {
           ];
            this.loadNewUserInfos();
     }
+    
     async loadNewUserInfos() {
         try {
           this.loader.set(true);

@@ -1,9 +1,11 @@
 
 <div class="new-user-header" style="display: flex; align-items: center; justify-content: space-between;">
-  <h2>Users</h2>
-  <button class="btn btn-primary" (click)="openAddUserDialog()">
+  <h2>New Users Info</h2>
+  <p-button label="Add New" icon="bi bi-plus" size="small" [raised]="true" (click)="openAddUserDialog()" />
+
+  <!-- <button class="btn btn-primary" (click)="openAddUserDialog()">
     <i class="bi bi-plus"></i> Add New
-  </button>
+  </button> -->
 </div>
 <div class="header-right mb-2">
 </div>
@@ -13,9 +15,11 @@
 <div class="card surface-50 p-4 border-round-xl shadow-1">
     <p-table #dt2
     [size]="selectedSize"
-    [value]="userData"
+    [value]="userData"  
     [globalFilterFields]="globalFilterFields"
     [customSort]="true"
+    [scrollable]="true" 
+    scrollHeight="60rem"
     (sortFunction)="customSort($event)"
     [tableStyle]="{ 'min-width': '50rem' }"
     styleClass="modern-table"
@@ -97,51 +101,32 @@
             </tr>
         </ng-template>
            @if (userData.length > 0) {
-            <ng-template pTemplate="body" let-user>
+            <ng-template pTemplate="body" let-user>           
             <tr>
-               @for (col of selectedColumns; track col.name) {
+               @for (col of selectedColumns; track col.name) {              
                 <td class="text-left px-4 py-3">
                   @if (col.name === 'id') {
                     {{ user.id }}
                   } @else if (col.name === 'title') {
                     {{ user.title }}
                   } @else if (col.name === 'description') {
-                    <span [pTooltip]="user.description" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-width: 350px; white-space: normal; line-height: 1.4; height: 2.8em;">
+                    <span [pTooltip]="user.description" tooltipPosition="left" class="large-discription" >
                       {{ user.description }}
                     </span>
                   }@else if (col.name === 'category') {
-                    <span [pTooltip]="user.description" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-width: 350px; white-space: normal; line-height: 1.4; height: 2.8em;">
-                      {{ user.category }}
-                    </span>
-                  } @else if (col.name === 'actions') {
-                    <div class="btn-group btn-group-sm" role="group">
-                      <button class="btn btn-outline-warning" (click)="onActionClick({action: 'edit', rowData: user})" title="Edit">
-                        <i class="bi bi-pencil"></i>
-                      </button>
-                      <button class="btn btn-outline-danger" (click)="onActionClick({action: 'delete', rowData: user})" title="Delete">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </div>
+                    {{ user.categoryName }}
+                  }@else if (col.name === 'isActive') {
+                    <p-tag 
+                      [severity]="user.isActive ? 'success' : 'warn'" 
+                      [value]="user.isActive ? 'Active' : 'InActive'">
+                    </p-tag>
+                    <!-- {{ user.isActive  }} -->
+                  }@else if (col.name === 'actions') {
+                     <p-button class="m-1" pTooltip="Edit" tooltipPosition="left" icon="bi bi-pencil"  [raised]="true" [rounded]="true" severity="info" (click)="onActionClick({action: 'edit', rowData: user})" />
+                      <p-button class="m-1" pTooltip="Delete" icon="bi bi-trash" [raised]="true" [rounded]="true" severity="danger" (click)="onActionClick({action: 'delete', rowData: user})" />
                   }
                 </td>
                }
-                <!-- <td class="text-left px-4 py-3">{{ user.id }}</td>
-                <td class="text-left px-4 py-3">{{ user.title }}</td>
-                <td class="text-left px-4 py-3">
-                    <span [pTooltip]="user.description" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-width: 350px; white-space: normal; line-height: 1.4; height: 2.8em;">
-                        {{ user.description }}
-                    </span>
-                </td>
-                <td class="actions-cell">
-                  <div class="btn-group btn-group-sm" role="group">
-                    <button class="btn btn-outline-warning" (click)="onActionClick({action: 'edit', rowData: user})" title="Edit">
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-outline-danger" (click)="onActionClick({action: 'delete', rowData: user})" title="Delete">
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </div>
-                </td> -->
             </tr>
             </ng-template>
           }@else {
