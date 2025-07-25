@@ -69,16 +69,6 @@
         }
       }
 
-      .p-datatable-header {
-        border: 0;
-        color: #333333;
-        padding: 0;
-
-        & > div{
-          padding: 0.5rem 1rem 0.5rem 1rem;
-        }
-      }
-
       thead tr {
         &:first-child th {
           &:hover {

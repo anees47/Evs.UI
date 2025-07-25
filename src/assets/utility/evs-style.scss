@@ -233,8 +233,8 @@
   }
 }
 
-.p-select-overlay .p-select-list, 
-.p-listbox .p-listbox-list, 
+.p-select-overlay .p-select-list,
+.p-listbox .p-listbox-list,
 .p-multiselect-items{
   margin: 0;
   padding: 0;
@@ -513,7 +513,7 @@ p-multiselect-item li:not(.p-highlight):not(.p-disabled):hover {
 }
 
 //-------------------------------------------------------------
-//----------- Calimatic Modal css ------------------
+//----------- E2v Modal css ------------------
 //-------------------------------------------------------------
 .p-dialog .p-dialog-header .p-dialog-title{
   font-size: 19px;
@@ -529,13 +529,16 @@ p-multiselect-item li:not(.p-highlight):not(.p-disabled):hover {
   }
 
   .modal-header {
-    padding: 16px 16px 12px 16px;
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid #e9ecef;
+  background-color: #667eea;
+  color: white;
+  border-radius: 12px 12px 0 0;
+
     box-shadow: 0px 1px 4px -1px gainsboro;
-    min-height: 62px;
-    position: relative;
-    z-index: 3;
 
     h4 {
       margin: 0;
@@ -947,7 +950,7 @@ p-multiselect-item li:not(.p-highlight):not(.p-disabled):hover {
 
     .p-tablist-tab-list{
       border: 0;
-      
+
       .p-tab {
         white-space: nowrap;
         color: #919191;
@@ -958,11 +961,11 @@ p-multiselect-item li:not(.p-highlight):not(.p-disabled):hover {
         padding: 1.25rem 1.75rem;
         border: 0;
         line-height: 1;
-    
+
         &.p-tab-active {
             color: var(--primary-color);
             font-weight: 600;
-        
+
             &:before {
               content: "";
               position: absolute;
@@ -979,7 +982,7 @@ p-multiselect-item li:not(.p-highlight):not(.p-disabled):hover {
               border-top-right-radius: 7px;
             }
           }
-    
+
         &:hover {
           background: #f1f1f1;
         }

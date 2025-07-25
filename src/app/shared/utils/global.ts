@@ -6,18 +6,18 @@ exportFileOptions: [
     key: 'csv',
     isIcon: true
   },
-  {
-    name: 'Export as PDF',
-    icon: 'pi pi-file-pdf',
-    key: 'pdf',
-    isIcon: true
-  },
-  {
-    'name': 'Export as XLSX',
-    'icon': 'pi pi-file-excel',
-    'key': 'xlsx',
-    'isIcon': true
-  }
+  // {
+  //   name: 'Export as PDF',
+  //   icon: 'pi pi-file-pdf',
+  //   key: 'pdf',
+  //   isIcon: true
+  // },
+  // {
+  //   'name': 'Export as XLSX',
+  //   'icon': 'pi pi-file-excel',
+  //   'key': 'xlsx',
+  //   'isIcon': true
+  // }
 ],
 
 }
