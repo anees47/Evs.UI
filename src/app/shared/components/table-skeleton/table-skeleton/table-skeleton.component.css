@@ -8,9 +8,11 @@
   overflow: hidden;
   flex: 1;
   overflow-y: auto;
+  min-width: 134rem;
 }
 
 .skeleton-row {
+  width: 100%;
   display: flex;
   padding: 12px 16px;
   border-bottom: 1px solid #f1f3f4;
@@ -30,11 +32,11 @@
   animation: shimmer 2s infinite;
 }
 
-.skeleton-cell:nth-child(1) { width: 60px; }
-.skeleton-cell:nth-child(2) { width: 180px; }
-.skeleton-cell:nth-child(3) { width: 220px; }
-.skeleton-cell:nth-child(4) { width: 100px; }
-.skeleton-cell:nth-child(5) { width: 100px; }
+.skeleton-cell:nth-child(1) { width: 25%; }
+.skeleton-cell:nth-child(2) { width: 25%; }
+.skeleton-cell:nth-child(3) { width: 25%; }
+.skeleton-cell:nth-child(4) { width: 25%; }
+.skeleton-cell:nth-child(5) { width: 25%; }
 
 
 /* Responsive Design */

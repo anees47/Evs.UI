@@ -11,24 +11,27 @@ import { SelectButton } from "primeng/selectbutton";
 import { FormsModule } from '@angular/forms';
 import { ExportFileOptions, TableColumnFilterEnum, TableColumnFilterStateEnum, TableColumnInterface, TableSortModeEnum } from '../../../shared/Modals/TableModals';
 import { AppConstants } from '../../../shared/utils/global';
-import { ITableAction } from '../../../shared/interfaces/TableInterfaces';
+import { FileExportEnum, ITableAction } from '../../../shared/interfaces/TableInterfaces';
 import { AddUpdateUserComponent } from "../../NewUserInfo/components/NewUserInfo/saveUser/add-update-user.component";
 import { CommonModule } from '@angular/common';
 import { TableSkeletonComponent } from "../../../shared/components/table-skeleton/table-skeleton/table-skeleton.component";
+import { Tag } from 'primeng/tag';
+import { Button } from "primeng/button";
+import { FileExportService } from '../../../shared/services/file-export.service';
 
 
 @Component({
     templateUrl: './new-user-info-2.component.html',
     styleUrl: './new-user-info-2.component.css',
     standalone: true,
-    imports: [TableModule, Tooltip, IconField, InputIcon, SelectButton, FormsModule, AddUpdateUserComponent, CommonModule, TableSkeletonComponent],
+    imports: [Tag, TableModule, Tooltip, IconField, InputIcon, SelectButton, FormsModule, AddUpdateUserComponent, CommonModule, TableSkeletonComponent, Button],
 })
 
 export class NewUserInfo2Component implements OnInit {
   constructor(private cdr: ChangeDetectorRef) {}
   //--Services
     userService = inject(UserService);
-
+    fileExportService = inject(FileExportService);
   //--ViewChild variables
     @ViewChild('dt2') dt2!: Table<any>;  // ← Add the `!` here
 
@@ -51,6 +54,7 @@ export class NewUserInfo2Component implements OnInit {
   isEditDialogOpen = signal(false);
   addUserDialogOpen = signal(false);
   loader = signal(false);
+
 
   //@Output() onExport = new EventEmitter<any>();
 
@@ -97,9 +101,35 @@ export class NewUserInfo2Component implements OnInit {
       },
       {
         width: "50px",
+        name: "categoryName",
+        nameText: "category",
+        sortable: true,
+        order: 1,
+        field: "categoryName",
+        filter: false,
+        filterType: TableColumnFilterEnum.NONE,
+        showMenu: true,
+        filterValues: [{}],
+        isVisible: true,
+      },
+      {
+        width: "50px",
+        name: "isActive",
+        nameText: "status",
+        sortable: false,
+        order: 1,
+        field: "isActive",
+        filter: false,
+        filterType: TableColumnFilterEnum.NONE,
+        showMenu: true,
+        filterValues: [{}],
+        isVisible: true,
+      },
+      {
+        width: "50px",
         name: "actions",
         nameText: "actions",
-        sortable: true,
+        sortable: false,
         order: 1,
         field: "actions",
         filter: true,
@@ -109,6 +139,7 @@ export class NewUserInfo2Component implements OnInit {
         isVisible: true,
       }
     ] as unknown as TableColumnInterface[]
+
 
     ngOnInit() {
           this.gridColumns.set(this.userColumns);
@@ -157,8 +188,7 @@ export class NewUserInfo2Component implements OnInit {
             this.sortTableData(event);
         } else if (this.isSorted() == false) {
             this.isSorted.set(null);
-            //this.products = [...this.initialValue];
-            //this.dt.clear();
+            this.sortTableData(event);
         }
     }
   handleTableAction(event: { action: ITableAction, rowData: any }) {
@@ -182,54 +212,19 @@ export class NewUserInfo2Component implements OnInit {
         });
     }
 
+
  // Table view size
   onTableViewSizeChange(size: string) {
     this.selectedSize = size;
   }
-  onExportClick() {
-    const data = this.userData;
-    const exportData = {
-      data: data,
-      columns: this.selectedColumns,
-      fileName: `${'table-data'}-${new Date().toISOString().split('T')[0]}`
-
-      //fileName: `${this.configs.gridName || 'table-data'}-${new Date().toISOString().split('T')[0]}`
-    };
-    //this.onExport.emit(exportData);
-
-    // Also implement basic CSV export
-    this.exportToCSV(data, exportData.fileName);
-  }
-  exportToCSV(data: any[], fileName: string) {
-    if (!data || data.length === 0) return;
-    // Get headers from selected columns
-    const headers = this.selectedColumns.map(col => col.nameText);
-
-    // Create CSV content
-    let csvContent = headers.join(',') + '\n';
-
-    data.forEach(row => {
-      const rowData = this.selectedColumns.map(col => {
-        const value = row[col.field || col.name];
-        // Escape commas and quotes in CSV
-        if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
-          return `"${value.replace(/"/g, '""')}"`;
-        }
-        return value || '';
-      });
-      csvContent += rowData.join(',') + '\n';
-    });
-
-    // Create and download file
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `${fileName}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  onExportClick(key:any) {
+    this.fileExportService.onDataExport(
+        key,
+        `${'table-data'}-${new Date().toISOString().split('T')[0]}`,
+        this.userData,
+        this.selectedColumns
+      );
+    
   }
 
   onColumnVisibilityChange(event: Event, column: TableColumnInterface) {

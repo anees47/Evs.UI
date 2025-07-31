@@ -40,13 +40,13 @@ export class FileExportService {
   }
   onDataExport(key: FileExportEnum, gridName: string, gridFilteredData: any[], selectedColumns: TableColumnInterface[]) {
     if (key === FileExportEnum.CSV) {
-      this.exportCSV(gridName, gridFilteredData)
+      this.exportCSV(gridName, gridFilteredData, selectedColumns)
     }
     else if (key === FileExportEnum.PDF) {
       this.exportPdf(gridName, selectedColumns, gridFilteredData);
     }
     else if (key === FileExportEnum.EXCEL) {
-      this.exportExcel(gridName, gridFilteredData);
+      this.exportExcel(gridName, gridFilteredData, selectedColumns);
     }
   }
 
@@ -55,20 +55,59 @@ export class FileExportService {
     this.exportFilesSubject.next([])
   }
 
-  private exportCSV(gridId: string, gridData: any[]) {
-    this.addExportFile(gridId,true,FileExportPath.CSV);
-    import('xlsx').then((xlsx) => {
-      const worksheet = xlsx.utils.json_to_sheet(gridData);
-      const csv = xlsx.utils.sheet_to_csv(worksheet);
-      const CSV_TYPE = 'text/csv;charset=utf-8;';
-      const CSV_EXTENSION = '.csv';
-      const data: Blob = new Blob([csv], {
-        type: CSV_TYPE
+
+  private exportCSV(gridId: string, gridData: any[], selectedColumns: TableColumnInterface[]) {
+
+    this.addExportFile(gridId,true,FileExportPath.CSV); // Assuming FileExportPath.EXCEL is a generic "exporting file" status, or you might have a FileExportPath.CSV
+
+  import('xlsx').then((xlsx) => {
+    // 1. Filter selectedColumns to include only visible columns and exclude 'Action' and 'Actions'
+    const exportColumns = selectedColumns.filter(col =>
+      col.isVisible && col.name.toLowerCase() !== 'action' && col.name.toLowerCase() !== 'actions'
+    );
+
+    // 2. Create a header array for the CSV using the filtered columns' nameText
+    const headers = exportColumns.map(col => col.nameText);
+
+    // 3. Prepare the data by mapping each row to include only the values for the exportColumns.
+    // This step is crucial for CSV to ensure only the desired columns are present.
+    const formattedData = gridData.map(row => {
+      const newRow: { [key: string]: any } = {};
+      exportColumns.forEach(col => {
+        // Use col.name as the key to get the value from the original row
+        // Ensure values are handled for CSV (e.g., wrap strings with commas in quotes)
+        let value = row[col.name];
+        if (typeof value === 'string' && value.includes(',')) {
+          value = `"${value}"`; // Simple CSV escaping for commas
+        }
+        newRow[col.name] = value;
       });
-      FileSaver.saveAs(data, gridId + '_export_' + new Date().getTime() + CSV_EXTENSION);
-      this.updateExportFile(false);
-    })
-  }
+      return newRow;
+    });
+
+    // 4. Create the worksheet with the filtered data and custom headers.
+    // For CSV, we'll use the headers array directly for the first row.
+    const worksheet = xlsx.utils.json_to_sheet(formattedData, { header: exportColumns.map(col => col.name) });
+
+    // Manually add headers to the first row (A1, B1, C1, etc.)
+    // This ensures the correct display names are used as headers in the CSV.
+    xlsx.utils.sheet_add_aoa(worksheet, [headers], { origin: 'A1' });
+
+    // 5. Convert the worksheet to CSV string
+    // Change bookType to 'csv' and type to 'string'
+    const csvString: string = xlsx.utils.sheet_to_csv(worksheet); // Use sheet_to_csv for direct CSV output
+
+    const File_TYPE = 'text/csv;charset=utf-8;';
+    const File_EXTENSION = '.csv';
+
+    const data: Blob = new Blob([csvString], { // Use csvString directly here
+      type: File_TYPE
+    });
+
+    FileSaver.saveAs(data, gridId + '_export_' + new Date().getTime() + File_EXTENSION);
+    this.updateExportFile(false);
+  });
+}
 
   private exportPdf(gridId: string, columns: TableColumnInterface[], gridData: any) {
     this.addExportFile(gridId,true,FileExportPath.PDF);
@@ -101,20 +140,44 @@ export class FileExportService {
     });
   }
 
- private exportExcel(gridId:string, gridData:any[]) {
-    this.addExportFile(gridId,true,FileExportPath.EXCEL);
-    import('xlsx').then((xlsx) => {
-      const worksheet = xlsx.utils.json_to_sheet(gridData);
-      const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
-      const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-      let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-      let EXCEL_EXTENSION = '.xlsx';
-      const data: Blob = new Blob([excelBuffer], {
-        type: EXCEL_TYPE
+private exportExcel(gridId:string, gridData:any[], selectedColumns: TableColumnInterface[]) {
+  this.addExportFile(gridId,true,FileExportPath.EXCEL);
+  import('xlsx').then((xlsx) => {
+    // 1. Filter selectedColumns to include only visible columns and exclude 'Action'
+    const exportColumns = selectedColumns.filter(col =>
+      col.isVisible && col.name.toLowerCase() !== 'action'&& col.name.toLowerCase() !== 'actions'
+    );
+
+    // 2. Create a header array for the Excel sheet using the filtered columns' nameText
+    const headers = exportColumns.map(col => col.nameText);
+
+    // 3. Prepare the data by mapping each row to include only the values for the exportColumns
+    const formattedData = gridData.map(row => {
+      const newRow: { [key: string]: any } = {};
+      exportColumns.forEach(col => {
+        newRow[col.name] = row[col.name]; // Use col.name as the key to get the value from the original row
       });
-      FileSaver.saveAs(data, gridId + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
-      this.updateExportFile(false);
+      return newRow;
     });
-  }
+
+    // 4. Create the worksheet with the filtered data and custom headers
+    // The { header: headers } option ensures that only these columns are included
+    // and their corresponding nameText is used as the header.
+    const worksheet = xlsx.utils.json_to_sheet(formattedData, { header: exportColumns.map(col => col.name) }); // Use col.name for json_to_sheet to correctly map data
+
+    // Manually add headers to the first row (A1, B1, C1, etc.)
+    xlsx.utils.sheet_add_aoa(worksheet, [headers], { origin: 'A1' });
+
+    const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+    const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+    let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([excelBuffer], {
+      type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, gridId + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+    this.updateExportFile(false);
+  });
+}
 }
 

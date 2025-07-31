@@ -256,6 +256,9 @@ p {
   }
 }
 
+.p-button-rounded{
+  border-radius: 20px;
+}
 
 .btn {
   padding: 0.75rem 1.5rem;
@@ -470,7 +473,8 @@ button {
     width: 30px;
     min-width: 30px;
     height: 30px;
-    color: var(--primary-color);
+    gap: 2px;
+    // color: var(--primary-color);
     font-size: 1rem;
   }
 

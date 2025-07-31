@@ -56,7 +56,7 @@
               <ul class="dropdown-menu">
                 @for (option of fileExportOptions || []; track option.key) {
                   <li>
-                    <a class="dropdown-item" href="#" (click)="onExportClick(); $event.preventDefault()">
+                    <a class="dropdown-item" href="#" (click)="onExportClick(option.key); $event.preventDefault()">
                       <i [class]="option.icon"></i>
                       {{ option.name }}
                     </a>
@@ -92,7 +92,11 @@
         <ng-template pTemplate="header">
             <tr>
               @for (col of selectedColumns; track col.name) {
-                <th pSortableColumn="id" [style]="'min-width:'+ col.width + 'px'" class="font-bold text-900 text-left px-4 py-3">{{ col.nameText }} <p-sortIcon field="id"></p-sortIcon></th>
+                @if (col.sortable) {
+                  <th [pSortableColumn]="col.name" [style]="'min-width:'+ col.width + 'px'" class="font-bold text-900 text-left px-4 py-3">{{ col.nameText }} <p-sortIcon [field]="col.name"></p-sortIcon></th>
+                }@else {
+                  <th [style]="'min-width:'+ col.width + 'px'" class="font-bold text-900 text-left px-4 py-3">{{ col.nameText }}</th>
+                }
               }
             </tr>
         </ng-template>
@@ -101,6 +105,7 @@
             <tr>
                @for (col of selectedColumns; track col.name) {
                 <td class="text-left px-4 py-3">
+
                   @if (col.name === 'id') {
                     {{ user.id }}
                   } @else if (col.name === 'title') {
@@ -109,39 +114,21 @@
                     <span [pTooltip]="user.description" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-width: 350px; white-space: normal; line-height: 1.4; height: 2.8em;">
                       {{ user.description }}
                     </span>
-                  }@else if (col.name === 'category') {
-                    <span [pTooltip]="user.description" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-width: 350px; white-space: normal; line-height: 1.4; height: 2.8em;">
-                      {{ user.category }}
-                    </span>
+                  }
+                  @else if (col.name === 'isActive') {
+                    <p-tag
+                     [severity]="user.isActive ? 'Success' : 'warn'"
+                     [value]="user.isActive ? 'Success' : 'Warning'">
+                   </p-tag>
+                  }
+                  @else if (col.name === 'categoryName') {
+                    {{ user.categoryName }}
                   } @else if (col.name === 'actions') {
-                    <div class="btn-group btn-group-sm" role="group">
-                      <button class="btn btn-outline-warning" (click)="onActionClick({action: 'edit', rowData: user})" title="Edit">
-                        <i class="bi bi-pencil"></i>
-                      </button>
-                      <button class="btn btn-outline-danger" (click)="onActionClick({action: 'delete', rowData: user})" title="Delete">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </div>
+                      <p-button class="m-1" pTooltip="Edit" tooltipPosition="left" icon="bi bi-pencil"  [raised]="true" [rounded]="true" severity="info" (click)="onActionClick({action: 'edit', rowData: user})" />
+                      <p-button class="m-1" pTooltip="Delete" icon="bi bi-trash" [raised]="true" [rounded]="true" severity="danger" (click)="onActionClick({action: 'delete', rowData: user})" />
                   }
                 </td>
                }
-                <!-- <td class="text-left px-4 py-3">{{ user.id }}</td>
-                <td class="text-left px-4 py-3">{{ user.title }}</td>
-                <td class="text-left px-4 py-3">
-                    <span [pTooltip]="user.description" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-width: 350px; white-space: normal; line-height: 1.4; height: 2.8em;">
-                        {{ user.description }}
-                    </span>
-                </td>
-                <td class="actions-cell">
-                  <div class="btn-group btn-group-sm" role="group">
-                    <button class="btn btn-outline-warning" (click)="onActionClick({action: 'edit', rowData: user})" title="Edit">
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-outline-danger" (click)="onActionClick({action: 'delete', rowData: user})" title="Delete">
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </div>
-                </td> -->
             </tr>
             </ng-template>
           }@else {
