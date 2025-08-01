@@ -39,6 +39,7 @@ export class FileExportService {
     this.exportFileSubject.next(updatedFile);
   }
   onDataExport(key: FileExportEnum, gridName: string, gridFilteredData: any[], selectedColumns: TableColumnInterface[]) {
+    debugger
     if (key === FileExportEnum.CSV) {
       this.exportCSV(gridName, gridFilteredData, selectedColumns)
     }

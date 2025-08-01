@@ -39,7 +39,6 @@ export class CategoriesComponent implements OnInit {
   async loadCategories() {
     try {
       // Use the service to get categories from API
-      debugger
       this.categories = await this.userService.getCategories(false);
     } catch (error) {
       console.error('Error loading categories:', error);
