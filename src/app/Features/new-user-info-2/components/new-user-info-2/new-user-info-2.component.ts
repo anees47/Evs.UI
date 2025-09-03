@@ -1,26 +1,26 @@
-
 import { ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output, signal, TemplateRef, ViewChild, viewChild } from '@angular/core';
 import { Table, TableModule } from 'primeng/table';
 import { SortEvent } from 'primeng/api';
-import { UserService } from '../../NewUserInfo/service/userService';
-import { NewUserInfo, SearchNewUserInfosRequestDto } from '../../NewUserInfo/Modals/NewUserInfoModals';
+import { UserService } from '../../../new-user-info/services/userService';
+import { NewUserInfo, SearchNewUserInfosRequestDto } from '../../../new-user-info/models/NewUserInfoModals';
 import { Tooltip } from 'primeng/tooltip';
 import { IconField } from "primeng/iconfield";
 import { InputIcon } from "primeng/inputicon";
 import { SelectButton } from "primeng/selectbutton";
 import { FormsModule } from '@angular/forms';
-import { ExportFileOptions, TableColumnFilterEnum, TableColumnFilterStateEnum, TableColumnInterface, TableSortModeEnum } from '../../../shared/Modals/TableModals';
-import { AppConstants } from '../../../shared/utils/global';
-import { FileExportEnum, ITableAction } from '../../../shared/interfaces/TableInterfaces';
-import { AddUpdateUserComponent } from "../../NewUserInfo/components/NewUserInfo/saveUser/add-update-user.component";
+import { ExportFileOptions, TableColumnFilterEnum, TableColumnFilterStateEnum, TableColumnInterface, TableSortModeEnum } from '../../../../shared/Modals/TableModals';
+import { AppConstants } from '../../../../shared/utils/global';
+import { FileExportEnum, ITableAction } from '../../../../shared/interfaces/TableInterfaces';
+import { AddUpdateUserComponent } from "../../../new-user-info/components/save-user/add-update-user.component";
 import { CommonModule } from '@angular/common';
-import { TableSkeletonComponent } from "../../../shared/components/table-skeleton/table-skeleton/table-skeleton.component";
+import { TableSkeletonComponent } from "../../../../shared/components/table-skeleton/table-skeleton/table-skeleton.component";
 import { Tag } from 'primeng/tag';
 import { Button } from "primeng/button";
-import { FileExportService } from '../../../shared/services/file-export.service';
+import { FileExportService } from '../../../../shared/services/file-export.service';
 
 
 @Component({
+    selector: 'e2v-new-user-info-2',
     templateUrl: './new-user-info-2.component.html',
     styleUrl: './new-user-info-2.component.css',
     standalone: true,

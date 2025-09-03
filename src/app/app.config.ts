@@ -9,17 +9,17 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(),
-     providePrimeNG({
-   theme: {
-     preset: Aura,
-     options: {
-       darkModeSelector: false,
-       cssLayer: {
-         name: 'primeng',
-         order: 'primeng'
-       }
-     }
-   }
- }),
+    providePrimeNG({
+      theme: {
+        preset: Aura,
+        options: {
+          darkModeSelector: false,
+          cssLayer: {
+            name: 'primeng',
+            order: 'primeng'
+          }
+        }
+      }
+    }),
   ]
 };

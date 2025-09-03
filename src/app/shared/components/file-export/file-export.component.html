@@ -4,14 +4,13 @@
       <div class="flex gap-2 justify-content-between align-items-center w-full">
         <div class="flex gap-2 justify-content-start align-items-center">
           @if(file()?.loading){
-            <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem; color: var(--success-green);" ></i>
+            <i class="fa-solid fa-spinner fa-spin loading-spinner" ></i>
             <span class="font-bold white-space-nowrap">
             Exporting File
           </span>
           }
           @else {
-          <i class="fa-solid fa-check"
-            style="background-color: var(--success-green)"></i>
+          <i class="fa-solid fa-check success-check"></i>
           <span class="font-bold white-space-nowrap">
             File is ready
           </span>

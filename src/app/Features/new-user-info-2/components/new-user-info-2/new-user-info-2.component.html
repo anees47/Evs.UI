@@ -1,0 +1,171 @@
+<div class="new-user-header" style="display: flex; align-items: center; justify-content: space-between;">
+  <h2>Users</h2>
+  <button class="btn btn-primary" (click)="openAddUserDialog()">
+    <i class="bi bi-plus"></i> Add New
+  </button>
+</div>
+<div class="header-right mb-2">
+</div>
+@if (this.loader()) {
+<app-table-skeleton></app-table-skeleton>
+}@else {
+<div class="card surface-50 p-4 border-round-xl shadow-1">
+    <p-table #dt2
+    [size]="selectedSize"
+    [value]="userData"
+    [globalFilterFields]="globalFilterFields"
+    [customSort]="true"
+    (sortFunction)="customSort($event)"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    styleClass="modern-table"
+    >
+    <ng-template pTemplate="caption">
+        <div class="flex justify-content-between align-items-center">
+          <!-- Left side - Search -->
+          <div class="search-box-container">
+            <p-iconfield iconPosition="left">
+              <p-inputicon class="search-icon">
+                <i class="bi bi-search"></i>
+              </p-inputicon>
+              <input pInputText type="text" class="p-inputtext p-component search-input search-box" (input)="onGlobalFilter($event)" placeholder="Search keyword" />
+            </p-iconfield>
+          </div>
+
+          <!-- Right side - Controls -->
+          <div class="flex align-items-center gap-2">
+            <!-- Table Size Selector -->
+            <div class="table-size">
+              <p-selectButton
+              [options]="sizes"
+              [(ngModel)]="selectedSize"
+              [multiple]="false"
+              optionValue="value">
+              <ng-template let-option pTemplate="item">
+                <i [ngClass]="option.icon"></i>
+              </ng-template>
+            </p-selectButton>
+            </div>
+
+            <!-- Export Dropdown -->
+            <div class="dropdown">
+              <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-download"></i>
+                Export
+              </button>
+              <ul class="dropdown-menu">
+                @for (option of fileExportOptions || []; track option.key) {
+                  <li>
+                    <a class="dropdown-item" href="#" (click)="onExportClick(option.key); $event.preventDefault()">
+                      <i [class]="option.icon"></i>
+                      {{ option.name }}
+                    </a>
+                  </li>
+                }
+              </ul>
+            </div>
+
+            <!-- Columns Dropdown -->
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-gear"></i>
+                Columns
+              </button>
+              <ul class="dropdown-menu">
+                @for (col of this.gridColumns(); track col.name) {
+                  <li>
+                    <label class="dropdown-item">
+                      <input
+                      type="checkbox"
+                      [checked]="col.isVisible !== false"
+                      (change)="onColumnVisibilityChange($event, col)"
+                      >
+                      {{ col.nameText }}
+                    </label>
+                  </li>
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+              @for (col of selectedColumns; track col.name) {
+                @if (col.sortable) {
+                  <th [pSortableColumn]="col.name" [style]="'min-width:'+ col.width + 'px'" class="font-bold text-900 text-left px-4 py-3">{{ col.nameText }} <p-sortIcon [field]="col.name"></p-sortIcon></th>
+                }@else {
+                  <th [style]="'min-width:'+ col.width + 'px'" class="font-bold text-900 text-left px-4 py-3">{{ col.nameText }}</th>
+                }
+              }
+            </tr>
+        </ng-template>
+           @if (userData.length > 0) {
+            <ng-template pTemplate="body" let-user>
+            <tr>
+               @for (col of selectedColumns; track col.name) {
+                <td class="text-left px-4 py-3">
+
+                  @if (col.name === 'id') {
+                    {{ user.id }}
+                  } @else if (col.name === 'title') {
+                    {{ user.title }}
+                  } @else if (col.name === 'description') {
+                    <span [pTooltip]="user.description" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-width: 350px; white-space: normal; line-height: 1.4; height: 2.8em;">
+                      {{ user.description }}
+                    </span>
+                  }
+                  @else if (col.name === 'isActive') {
+                    <p-tag
+                     [severity]="user.isActive ? 'Success' : 'warn'"
+                     [value]="user.isActive ? 'Success' : 'Warning'">
+                   </p-tag>
+                  }
+                  @else if (col.name === 'categoryName') {
+                    {{ user.categoryName }}
+                  } @else if (col.name === 'actions') {
+                      <p-button class="m-1" pTooltip="Edit" tooltipPosition="left" icon="bi bi-pencil"  [raised]="true" [rounded]="true" severity="info" (click)="onActionClick({action: 'edit', rowData: user})" />
+                      <p-button class="m-1" pTooltip="Delete" icon="bi bi-trash" [raised]="true" [rounded]="true" severity="danger" (click)="onActionClick({action: 'delete', rowData: user})" />
+                  }
+                </td>
+               }
+            </tr>
+            </ng-template>
+          }@else {
+            {{"No data found"}}
+          <ng-template pTemplate="body">
+            <tr class="empty-row">
+              <td [attr.colspan]="selectedColumns.length" class="empty-cell">
+                <div class="empty-state">
+                  <i class="bi bi-table empty-icon"></i>
+                  <p class="empty-text">'No data found'</p>
+                  <p class="empty-subtext">Try adjusting your search or filters</p>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        }
+    </p-table>
+</div>
+}
+@if (isEditDialogOpen()) {
+  <e2v-add-update-user
+    [isOpen]="isEditDialogOpen()"
+    [rowData]="selectedRowForEdit"
+    [isEditMode]="true"
+    (save)="onEditSave($event)"
+    (cancel)="onEditCancel()"
+    (close)="closeEditDialog()">
+  </e2v-add-update-user>
+}
+
+<!-- Add Dialog -->
+@if (addUserDialogOpen()) {
+  <e2v-add-update-user
+    [isOpen]="addUserDialogOpen()"
+    [rowData]="selectedRowForEdit"
+    [isEditMode]="false"
+    (save)="onAddSave($event)"
+    (cancel)="onAddCancel()"
+    (close)="closeAddUserDialog()">
+  </e2v-add-update-user>
+}

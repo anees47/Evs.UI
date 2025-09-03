@@ -1,0 +1,6 @@
+
+<div class="card">
+  <div class="">
+    <p-tree [value]="files" styleClass="w-full md:w-[30rem] tree-root" [filter]="true" filterMode="strict" filterPlaceholder="Search" selectionMode="single" [(selection)]="selectedFile" (onNodeExpand)="nodeExpand($event)" (onNodeCollapse)="nodeCollapse($event)" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)" scrollHeight="25rem" [virtualScroll]="true" [virtualScrollItemSize]="46" />
+  </div>
+</div>

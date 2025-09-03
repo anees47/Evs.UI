@@ -1,0 +1,56 @@
+<div class="grocery-tree-container">
+  <div class="header-section">
+    <h2>Grocery Store - Product Catalog</h2>
+    <p class="subtitle">Browse our grocery categories and items using the hierarchical tree view below</p>
+  </div>
+
+  <div class="content-section">
+    <div class="tree-panel">
+      <div class="panel-header">
+        <h3>Grocery Categories</h3>
+        <button 
+          type="button" 
+          class="clear-btn" 
+          (click)="clearSelection()"
+          [disabled]="selectedItems.length === 0">
+          Clear Selection ({{selectedItems.length}})
+        </button>
+      </div>
+      
+      <div class="tree-wrapper">
+        <app-tree-view 
+          [dataList]="treeData"
+          (itemSelected)="onItemSelected($event)">
+        </app-tree-view>
+      </div>
+    </div>
+
+    <div class="selection-panel" *ngIf="selectedItems.length > 0">
+      <div class="panel-header">
+        <h3>Selected Items</h3>
+        <span class="item-count">{{selectedItems.length}} item(s) selected</span>
+      </div>
+      
+      <div class="selected-items-list">
+        <div 
+          *ngFor="let item of selectedItems; let i = index" 
+          class="selected-item">
+          <div class="item-info">
+            <i [class]="item.node.icon || 'pi pi-circle-fill'"></i>
+            <span class="item-label">{{item.node.label}}</span>
+            <span class="item-data" *ngIf="item.node.data">
+              {{item.node.data | json}}
+            </span>
+          </div>
+          <button 
+            type="button" 
+            class="remove-btn" 
+            (click)="selectedItems.splice(i, 1)"
+            title="Remove from selection">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

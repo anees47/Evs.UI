@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { ApiHandlerService } from '../../../core/services/Base/api-handler.service';
 import { ENDPOINTS_CONSTANTS } from '../../../shared/utils/api-EndPoints';
-import { NewUserInfo, SearchNewUserInfosRequestDto, UpdateNewUserInfoRequestDto, CreateNewUserInfoRequestDto } from '../Modals/NewUserInfoModals';
+import { NewUserInfo, SearchNewUserInfosRequestDto, UpdateNewUserInfoRequestDto, CreateNewUserInfoRequestDto } from '../models/NewUserInfoModals';
 import { CreateCategoryDto, UpdateCategoryDto, CategoryResponseDto } from '../../../shared/models/category.dto';
 
 @Injectable({

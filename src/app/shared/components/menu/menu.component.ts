@@ -49,7 +49,11 @@ export class MenuComponent {
   }
 
   goToGrossery(option: string) {
-    alert('Grossery option: ' + option);
+    if (option === 'Option 1') {
+      this.router.navigate(['/grocery/catalog']);
+    } else {
+      alert('Grossery option: ' + option);
+    }
     this.showGrosseryDropdown = false;
   }
 }

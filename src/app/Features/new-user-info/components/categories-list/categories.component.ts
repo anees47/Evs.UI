@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule, formatDate } from '@angular/common';
-import { UserService } from '../../../service/userService';
-import { Category } from '../../../../../shared/models/category.model';
-import { CategoryResponseDto, CreateCategoryDto, UpdateCategoryDto } from '../../../../../shared/models/category.dto';
+import { UserService } from '../../services/userService';
+import { Category } from '../../../../shared/models/category.model';
+import { CategoryResponseDto, CreateCategoryDto, UpdateCategoryDto } from '../../../../shared/models/category.dto';
 
 @Component({
   selector: 'e2v-categories',

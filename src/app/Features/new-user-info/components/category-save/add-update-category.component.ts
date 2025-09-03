@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Category, updateCategory } from '../../../../../shared/models/category.model';
+import { Category, updateCategory } from '../../../../shared/models/category.model';
 
 @Component({
   selector: 'e2v-add-update-category',

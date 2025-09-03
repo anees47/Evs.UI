@@ -1,0 +1,102 @@
+<div class="new-user-header">
+  <h2>Users</h2>
+  <button class="btn btn-primary" (click)="openAddUserDialog()">
+    <i class="bi bi-plus"></i> Add New
+  </button>
+</div>
+
+<div class="table-container">
+  @if (!loader) {
+          <e2v-table
+        class="d-content"
+        (actionClicked)="onActionClick($event)"
+        (itemSelected)="onItemSelected($event)"
+        (onExport)="onExport($event)"
+        (sortClicked)="onSort($event)"
+        (cellActionClicked)="onCellActionClick($event)"
+        [configs]="{
+            dataKey: 'id',
+            enableTableViewSize: true,
+            sortMode: TableSortModeEnum.SINGLE,
+            enableColumnFilter: showCheckboxes,
+            enableExport: true,
+            enableColumnToggle: true,
+            enableColumnReorder: false,
+            defaultFilterState: TableColumnFilterStateEnum.CLOSE,
+            enableColumnResize: false,
+            loaderRows: 15,
+            enableGlobalSearch: true,
+            fixedHeaders: true,
+            gridId: 'userList',
+            gridName: 'UserListGrid',
+            data: userData,
+            loadPageSize: 200,
+            columns: userColumns,
+            rowHover: true,
+            enableCustomFilter: true,
+            noDataText: 'No users found',
+            isBatchCallInProgress: false,
+            hasBatchCall: false,
+            isCustomSelectionOn: showCheckboxes,
+            exportOptions: [
+              { name: 'Export to Excel', icon: 'bi bi-file-earmark-excel', key: 'excel', isIcon: true },
+              { name: 'Export to CSV', icon: 'bi bi-file-earmark-text', key: 'csv', isIcon: true },
+              { name: 'Export to PDF', icon: 'bi bi-file-earmark-pdf', key: 'pdf', isIcon: true }
+            ]
+          }">
+        </e2v-table>
+    } @else {
+       <app-table-skeleton></app-table-skeleton>
+    }
+  </div>
+
+  <!-- Edit Dialog -->
+   @if (isEditDialogOpen()) {
+     <e2v-add-update-user
+       [isOpen]="isEditDialogOpen()"
+       [rowData]="selectedRowForEdit"
+       [isEditMode]="true"
+       (save)="onEditSave($event)"
+       (cancel)="onEditCancel()"
+       (close)="closeEditDialog()">
+     </e2v-add-update-user>
+   }
+
+  <!-- Add Dialog -->
+   @if (addUserDialogOpen()) {
+     <e2v-add-update-user
+       [isOpen]="addUserDialogOpen()"
+       [rowData]="selectedRowForEdit"
+       [isEditMode]="false"
+       (save)="onAddSave($event)"
+       (cancel)="onAddCancel()"
+       (close)="closeAddUserDialog()">
+     </e2v-add-update-user>
+   }
+<ng-template #desctipionTemplate let-col="col" let-item>
+  <span class="clm-badge-blue" (click)="openDescriptionModal(item)">
+    <i class="fa fa-eye"></i>
+    <span>Show description</span>
+  </span>
+</ng-template>
+  <!-- Simple Modal Popup -->
+  @if (showDescriptionModal()) {
+    <div class="modal-overlay" (click)="closeDescriptionModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h5 class="modal-title">Description</h5>
+          <button type="button" class="btn-close" (click)="closeDescriptionModal()">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>{{this.description()}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeDescriptionModal()">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  }

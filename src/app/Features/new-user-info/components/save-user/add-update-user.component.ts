@@ -1,8 +1,8 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray, ValidatorFn, AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { NewUserInfo, UpdateNewUserInfoRequestDto, CreateNewUserInfoRequestDto } from '../../../Modals/NewUserInfoModals';
-import { UserService } from '../../../service/userService';
+import { NewUserInfo, UpdateNewUserInfoRequestDto, CreateNewUserInfoRequestDto } from '../../models/NewUserInfoModals';
+import { UserService } from '../../services/userService';
 
 @Component({
   selector: 'e2v-add-update-user',

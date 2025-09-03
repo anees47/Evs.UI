@@ -1,0 +1,82 @@
+/* Tree view icon styles */
+/* p-tree{
+  width: 25rem;
+} */
+
+p-scroller .p-tree-root{
+  height: 450px !important;
+}
+
+:host ::ng-deep {
+   p-scroller .p-tree-root{
+     height: 450px !important;
+   }
+   p-scroller{
+     height: 450px !important;
+   }
+   .p-tree-root{
+     height: 450px !important;
+   }
+}
+.p-tree-node-icon {
+  margin-right: 0.5rem;
+  font-size: 1rem;
+  color: #495057;
+}
+
+/* Bootstrap Icons in tree */
+.p-tree .bi {
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  color: #495057;
+}
+
+/* PrimeIcons in tree */
+.p-tree .pi {
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  color: #495057;
+}
+
+/* FontAwesome icons in tree */
+.p-tree .fa,
+.p-tree .fas,
+.p-tree .far,
+.p-tree .fab {
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  color: #495057;
+}
+
+/* Folder icons */
+.p-tree .bi-folder,
+.p-tree .bi-folder2 {
+  color: #f39c12;
+}
+
+/* File icons */
+.p-tree .bi-file-earmark,
+.p-tree .bi-file-earmark-pdf {
+  color: #e74c3c;
+}
+
+.p-tree .bi-file-earmark-word {
+  color: #2980b9;
+}
+
+.p-tree .bi-file-earmark-excel {
+  color: #27ae60;
+}
+
+.p-tree .bi-file-earmark-image {
+  color: #9b59b6;
+}
+
+.p-tree .bi-file-earmark-text {
+  color: #34495e;
+}
+
+/* .expandTogglebutton {
+  margin-top: 1.2rem;
+  gap: 0.5rem;
+} */
